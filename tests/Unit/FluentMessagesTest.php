@@ -68,6 +68,7 @@ class FluentMessagesTest extends TestCase
         $text = 'Hello world';
 
         $message->say($text);
+        $this->assertTrue($message->hasText());
         $this->assertSame($text, $message->getText());
     }
 
@@ -89,6 +90,7 @@ class FluentMessagesTest extends TestCase
 
         call_user_func_array([$message, 'with'.$type], $args);
         $this->assertSame(1, $message->attachmentsCount());
+        $this->assertTrue($message->hasAttachments());
         $this->assertSame($expected, $message->getAttachments()[strtolower($type)]);
     }
 

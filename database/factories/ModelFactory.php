@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
+
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
@@ -40,5 +41,12 @@ $factory->define(App\Bot::class, function (Faker\Generator $faker) {
         'name' => $faker->name,
         'username' => $faker->username.'Bot',
         'token' => Str::random(16),
+    ];
+});
+
+$factory->define(App\Post::class, function (Faker\Generator $faker) {
+    return [
+        'user_id' => factory(App\User::class)->create()->id,
+        'message' => $faker->paragraphs(3, true),
     ];
 });
