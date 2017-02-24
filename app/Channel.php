@@ -13,7 +13,7 @@ class Channel extends Model implements ChannelContract
      * @var array
      */
     protected $fillable = [
-        'user_id', 'name', 'slug', 'chat_id',
+        'user_id', 'bot_id', 'name', 'slug', 'chat_id',
     ];
 
     /**
@@ -21,12 +21,29 @@ class Channel extends Model implements ChannelContract
      */
     protected $casts = [
         'user_id' => 'integer',
+        'bot_id' => 'integer',
     ];
 
     /**
      * @var array
      */
     protected $with = ['members'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function bot()
+    {
+        return $this->belongsTo(Bot::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     /**
      * Идентификатор чата.

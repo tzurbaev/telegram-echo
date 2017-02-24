@@ -16,6 +16,7 @@ class CreateChannelsTable extends Migration
         Schema::create('channels', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id')->index();
+            $table->unsignedInteger('bot_id')->default(0)->index();
             $table->string('slug')->index();
             $table->string('chat_id')->default('')->index();
             $table->string('name');

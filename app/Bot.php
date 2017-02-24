@@ -18,6 +18,11 @@ class Bot extends Model implements BotContract
     /**
      * @var array
      */
+    protected $hidden = ['token'];
+
+    /**
+     * @var array
+     */
     protected $casts = [
         'user_id' => 'integer',
         'external_id' => 'integer',
