@@ -33,10 +33,6 @@ class Publisher implements PublisherContract
      */
     public function publish(PostContract $post)
     {
-        if (!$post->canBePublishedNow()) {
-            return false;
-        }
-
         $message = $this->messageFromPost($post);
 
         try {

@@ -22,17 +22,19 @@ class PostsTest extends TestCase
         Mockery::close();
     }
 
-    public function testPostCanBePostedRightAfterCreation()
+    public function testPostCanBePublished()
     {
-        // Записи могут быть опубликованы сразу после создания.
+        // Записи могут быть опубликованы.
 
-        // Создаем запись, публикуем.
+        // Создаем бота, канал, пользователя.
+        // Создаем мок Telegram API, создаем Telegram-транспорт с API.
+        // Создаем объект Publisher, передаем в него Telegram-транспорт.
+        // Создаем запись, указываем бот и канал, публикуем запись.
         // Проверяем, что запись была опубликована.
 
         $bot = factory(Bot::class)->create(['token' => 'token']);
         $channel = factory(Channel::class)->create(['chat_id' => '@telegram']);
         $user = factory(User::class)->create();
-        $channel->addMember($user);
 
         $telegram = Mockery::mock(Api::class);
 
@@ -48,7 +50,6 @@ class PostsTest extends TestCase
         $publisher = new Publisher($transport);
 
         $post = factory(Post::class)->create(['message' => 'Hello world']);
-
         $post->shouldBePublishedWith($bot, $channel);
 
         $publisher->publish($post, $user);
