@@ -17,11 +17,25 @@ class Publisher implements PublisherContract
     protected $transport;
 
     /**
-     * @param \App\Contracts\Transports\TransportContract $transport
+     * @param \App\Contracts\Transports\TransportContract $transport = null
      */
-    public function __construct(TransportContract $transport)
+    public function __construct(TransportContract $transport = null)
     {
         $this->transport = $transport;
+    }
+
+    /**
+     * Заменяет транспорт публикации.
+     *
+     * @param \App\Contracts\Transports\TransportContract $transport
+     *
+     * @return \App\Contracts\Posts\PublisherContract
+     */
+    public function withTransport(TransportContract $transport)
+    {
+        $this->transport = $transport;
+
+        return $this;
     }
 
     /**
@@ -29,10 +43,16 @@ class Publisher implements PublisherContract
      *
      * @param \App\Contracts\PostContract $post
      *
+     * @throws \RuntimeException
+     *
      * @return bool
      */
     public function publish(PostContract $post)
     {
+        if (is_null($this->transport)) {
+            throw new RuntimeException('Transport is required.');
+        }
+
         $message = $this->messageFromPost($post);
 
         try {

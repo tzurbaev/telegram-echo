@@ -7,10 +7,14 @@ use Mockery;
 use App\Post;
 use App\User;
 use App\Channel;
+use Carbon\Carbon;
 use Tests\TestCase;
 use Telegram\Bot\Api;
 use App\Posts\Publisher;
+use App\Jobs\PublishScheduledPost;
+use Illuminate\Support\Facades\Bus;
 use App\Transports\TelegramTransport;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class PostsTest extends TestCase
@@ -54,5 +58,52 @@ class PostsTest extends TestCase
 
         $publisher->publish($post, $user);
         $this->assertTrue($post->fresh()->wasPublished());
+    }
+
+    public function testScheduledPostPublishingJobShouldBeDispatchFromConsoleCommand()
+    {
+        // Задача публикации отложенных записей должна быть вызвана из консольной команды.
+
+        // Создаем отложенную запись.
+        // Вызываем команду публикации отложенных записей.
+        // Проверяем, что задача публикации записи была вызвана.
+
+        Bus::fake();
+
+        $post = factory(Post::class)->create([
+            'scheduled_at' => Carbon::now(),
+        ]);
+
+        Artisan::call('posts:publish');
+
+        Bus::assertDispatched(PublishScheduledPost::class, function ($job) use ($post) {
+            return $job->post->id === $post->id;
+        });
+
+        // Workaround for phpunit 6's risky test warning.
+        $this->assertTrue(true);
+    }
+
+    public function testConsoleCommandShouldNotProcessPostsThatAreNotYetReadyToBePublished()
+    {
+        // Команда публикации отложенных записей не должна обрабатывать записи,
+        // время публикации которых еще не подошло.
+
+        // Создаем запись, которая должна быть опубликована через 2 часа.
+        // Вызываем команду публикации отложенных записей.
+        // Проверяем, что ни одна запись не была опубликована.
+
+        $post = factory(Post::class)->create([
+            'scheduled_at' => Carbon::now()->addHours(1),
+        ]);
+
+        Bus::fake();
+
+        Artisan::call('posts:publish');
+
+        Bus::assertNotDispatched(PublishScheduledPost::class);
+
+        // Workaround for phpunit 6's risky test warning.
+        $this->assertTrue(true);
     }
 }

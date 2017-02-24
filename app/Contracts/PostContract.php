@@ -21,6 +21,13 @@ interface PostContract
     public function getChannel();
 
     /**
+     * Возвращает владельца публикации.
+     *
+     * @return \App\Contracts\UserContract
+     */
+    public function getOwner();
+
+    /**
      * Устанавливает бота и канал для этой записи.
      *
      * @param \App\Contracts\BotContract     $bot

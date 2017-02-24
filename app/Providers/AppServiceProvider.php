@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Posts\Publisher;
 use App\Channels\ChannelsFactory;
 use Illuminate\Support\ServiceProvider;
+use App\Contracts\Posts\PublisherContract;
 use App\Contracts\Channels\ChannelsFactoryContract;
 
 class AppServiceProvider extends ServiceProvider
@@ -32,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $map = [
             ChannelsFactoryContract::class => ChannelsFactory::class,
+            PublisherContract::class => Publisher::class,
         ];
 
         collect($map)->each(function ($concrete, $abstraction) {

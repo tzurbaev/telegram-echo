@@ -7,6 +7,7 @@ use App\Contracts\BotContract;
 use App\Contracts\PostContract;
 use App\Contracts\ChannelContract;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Post extends Model implements PostContract
 {
@@ -27,6 +28,21 @@ class Post extends Model implements PostContract
     ];
 
     /**
+     * Скоуп для выборки записей, которые могут быть опубликованы в текущем запросе.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeShouldBePublishedBetween(Builder $query, Carbon $from, Carbon $till)
+    {
+        $query->where('published_at', null)
+            ->whereBetween('scheduled_at', [$from, $till]);
+
+        return $query;
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Concerns\BelongsTo
      */
     public function bot()
@@ -40,6 +56,14 @@ class Post extends Model implements PostContract
     public function channel()
     {
         return $this->belongsTo(Channel::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -60,6 +84,16 @@ class Post extends Model implements PostContract
     public function getChannel()
     {
         return $this->channel;
+    }
+
+    /**
+     * Возвращает владельца публикации.
+     *
+     * @return \App\Contracts\UserContract
+     */
+    public function getOwner()
+    {
+        return $this->user;
     }
 
     /**
