@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Bot;
 use App\User;
 use App\Channel;
+use App\Observers\BotObserver;
 use App\Observers\UserObserver;
 use App\Observers\ChannelObserver;
 use Illuminate\Support\Facades\Event;
@@ -29,6 +31,10 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Auth\PasswordChanged' => [
             'App\Listeners\Auth\SendPasswordChangedWarning',
         ],
+
+        'App\Events\Bots\BotCreated' => [
+            'App\Listeners\Bots\ResolveBotInfo',
+        ],
     ];
 
     public function boot()
@@ -37,5 +43,6 @@ class EventServiceProvider extends ServiceProvider
 
         User::observe(UserObserver::class);
         Channel::observe(ChannelObserver::class);
+        Bot::observe(BotObserver::class);
     }
 }

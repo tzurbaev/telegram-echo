@@ -32,4 +32,9 @@ class User extends Authenticatable implements UserContract
     {
         return $this->hasMany(Channel::class);
     }
+
+    public function bots()
+    {
+        return $this->hasMany(Bot::class);
+    }
 }

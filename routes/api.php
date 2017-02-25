@@ -32,4 +32,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/', 'ChannelMembersController@store')->name('api.channels.members.store');
         Route::delete('/', 'ChannelMembersController@destroy')->name('api.channels.members.destroy');
     });
+
+    Route::resource('/bots', 'BotsController', [
+        'only' => ['index', 'store', 'show', 'update', 'destroy'],
+        'names' => [
+            'index' => 'api.bots.index',
+            'store' => 'api.bots.store',
+            'show' => 'api.bots.show',
+            'update' => 'api.bots.update',
+            'destroy' => 'api.bots.destroy',
+        ],
+    ]);
 });

@@ -14,12 +14,20 @@ use App\Posts\Publisher;
 use App\Jobs\PublishScheduledPost;
 use Illuminate\Support\Facades\Bus;
 use App\Transports\TelegramTransport;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class PostsTest extends TestCase
 {
     use DatabaseMigrations;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        Event::fake();
+    }
 
     protected function tearDown()
     {

@@ -6,11 +6,19 @@ use App\Bot;
 use App\Channel;
 use Tests\TestCase;
 use App\Messages\FluentMessage;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class FluentMessagesTest extends TestCase
 {
     use DatabaseMigrations;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        Event::fake();
+    }
 
     public function testMessageMayHaveBotAttached()
     {
