@@ -13,6 +13,23 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => 'auth'], function () {
+    Route::put('/settings', 'SettingsController@update')->name('api.settings.update');
+
+    Route::resource('/channels', 'ChannelsController', [
+        'only' => ['index', 'store', 'show', 'update', 'destroy'],
+        'names' => [
+            'index' => 'api.channels.index',
+            'store' => 'api.channels.store',
+            'show' => 'api.channels.show',
+            'update' => 'api.channels.update',
+            'destroy' => 'api.channels.destroy',
+        ],
+    ]);
+
+    Route::group(['prefix' => 'channels/{channel}/members'], function () {
+        Route::get('/', 'ChannelMembersController@index')->name('api.channels.members.index');
+        Route::post('/', 'ChannelMembersController@store')->name('api.channels.members.store');
+        Route::delete('/', 'ChannelMembersController@destroy')->name('api.channels.members.destroy');
+    });
 });

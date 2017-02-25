@@ -27,4 +27,9 @@ class User extends Authenticatable implements UserContract
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function channels()
+    {
+        return $this->hasMany(Channel::class);
+    }
 }

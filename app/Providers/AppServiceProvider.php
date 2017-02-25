@@ -7,6 +7,7 @@ use App\Channels\ChannelsFactory;
 use Illuminate\Support\ServiceProvider;
 use App\Contracts\Posts\PublisherContract;
 use App\Contracts\Channels\ChannelsFactoryContract;
+use App\Notifications\Service\TelegramNotificationsSender;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +28,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->singleton(TelegramNotificationsSender::class, function ($app) {
+            $token = $app['config']->get('telegram.token');
+            $chatId = $app['config']->get('telegram.chat');
+
+            return new TelegramNotificationsSender($token, $chatId);
+        });
+
         $this->bindContractsToImplementations();
     }
 
