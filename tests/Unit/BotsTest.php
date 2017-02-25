@@ -16,6 +16,8 @@ class BotsTest extends TestCase
 
     protected function tearDown()
     {
+        parent::tearDown();
+
         Mockery::close();
     }
 
