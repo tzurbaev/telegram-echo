@@ -8,7 +8,6 @@ use App\Channel;
 use App\Observers\BotObserver;
 use App\Observers\UserObserver;
 use App\Observers\ChannelObserver;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider

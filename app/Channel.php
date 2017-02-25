@@ -84,7 +84,7 @@ class Channel extends Model implements ChannelContract
      */
     protected function getMemberIndex(UserContract $user)
     {
-        return $this->members->search(function ($member) use ($user) {
+        return $this->members->search(function (UserContract $member) use ($user) {
             return $member->id === $user->id;
         });
     }
