@@ -28,6 +28,22 @@ interface PostContract
     public function getOwner();
 
     /**
+     * Прикрепляет медиа к записи.
+     *
+     * @param array $attachments
+     *
+     * @return \App\Contracts\PostContract
+     */
+    public function setAttachments(array $attachments);
+
+    /**
+     * Удаляет все прикрепления от записи.
+     *
+     * @return \App\Contracts\PostContract
+     */
+    public function removeAttachments();
+
+    /**
      * Устанавливает бота и канал для этой записи.
      *
      * @param \App\Contracts\BotContract     $bot

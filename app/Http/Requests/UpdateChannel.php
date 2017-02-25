@@ -14,9 +14,27 @@ class UpdateChannel extends FormRequest
      */
     public function authorize()
     {
-        $channel = $this->user()->channels()->find($this->route('channel'));
+        $user = $this->user();
 
-        return !is_null($channel);
+        $channel = $user->channels()->find($this->route('channel'));
+
+        if (is_null($channel)) {
+            return false;
+        }
+
+        // Если в текущем запросе связанный бот не обновляется,
+        // можно пропустить процесс валидации владельца бота.
+
+        if (!$this->has('bot_id')) {
+            return true;
+        }
+
+        // Иначе проверяем, что пользователь передал
+        // ID бота, который принадлежит именно ему.
+
+        $bot = $user->bots()->find($this->input('bot_id'));
+
+        return !is_null($bot);
     }
 
     /**
@@ -33,6 +51,7 @@ class UpdateChannel extends FormRequest
                 'max:255',
                 Rule::unique('channels')->ignore($this->route('channel')),
             ],
+            'bot_id' => 'integer|exists:bots',
         ];
     }
 }

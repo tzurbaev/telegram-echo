@@ -5,6 +5,13 @@ namespace App\Contracts;
 interface ChannelContract
 {
     /**
+     * Проверяет, привязан ли бот к каналу.
+     *
+     * @return bool
+     */
+    public function hasBot(): bool;
+
+    /**
      * Идентификатор чата.
      *
      * @return int|string

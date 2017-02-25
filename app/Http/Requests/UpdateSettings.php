@@ -32,6 +32,7 @@ class UpdateSettings extends FormRequest
             ],
             'password' => 'string|min:6|confirmed',
             'current_password' => 'required_with:password',
+            'timezone' => 'timezone',
         ];
     }
 }

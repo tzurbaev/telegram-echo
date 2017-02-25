@@ -16,7 +16,7 @@ class User extends Authenticatable implements UserContract
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'timezone',
     ];
 
     /**
@@ -36,5 +36,10 @@ class User extends Authenticatable implements UserContract
     public function bots()
     {
         return $this->hasMany(Bot::class);
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
     }
 }

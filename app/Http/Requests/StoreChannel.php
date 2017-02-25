@@ -13,7 +13,9 @@ class StoreChannel extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $bot = $this->user()->bots()->find($this->input('bot_id'));
+
+        return !is_null($bot);
     }
 
     /**
@@ -26,6 +28,7 @@ class StoreChannel extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'chat_id' => 'required|string|max:255,unique:channels',
+            'bot_id' => 'required|integer|exists:bots,id',
         ];
     }
 }

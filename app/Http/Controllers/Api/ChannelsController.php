@@ -35,7 +35,10 @@ class ChannelsController extends Controller
      */
     public function store(StoreChannel $request, ChannelsFactoryContract $channels)
     {
+        $bot = $request->user()->bots()->find($request->input('bot_id'));
+
         $channel = $channels->make($request->user(), $request->input('name'), $request->input('chat_id'));
+        $channel->bot()->associate($bot);
 
         return response()->json([
             'success' => 1,

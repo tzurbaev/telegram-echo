@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Bot;
 use App\User;
 use App\Channel;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Event;
 use App\Contracts\Channels\ChannelsFactoryContract;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -12,21 +14,31 @@ class ChannelsApiTest extends TestCase
 {
     use DatabaseMigrations;
 
+    protected function setUp()
+    {
+        parent::setUp();
+
+        Event::fake();
+    }
+
     public function testChannelsCanBeCreatedViaApi()
     {
         // Каналы могут быть созданы через API.
 
         // Создаем пользователя, авторизуемся.
+        // Создаем бота для привязки к каналу.
         // Вызываем метод создания нового канала.
         // Проверяем, что канал был создан.
 
         $user = factory(User::class)->create();
+        $bot = factory(Bot::class)->create(['user_id' => $user->id]);
 
         $this->actingAs($user);
 
         $payload = [
             'name' => 'Telegram Channel',
             'chat_id' => '@telegram',
+            'bot_id' => $bot->id,
         ];
 
         $this->json('POST', route('api.channels.store'), $payload)

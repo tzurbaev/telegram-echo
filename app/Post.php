@@ -3,6 +3,7 @@
 namespace App;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use App\Contracts\BotContract;
 use App\Contracts\PostContract;
 use App\Contracts\ChannelContract;
@@ -94,6 +95,45 @@ class Post extends Model implements PostContract
     public function getOwner()
     {
         return $this->user;
+    }
+
+    /**
+     * Прикрепляет медиа к записи.
+     *
+     * @param array $attachments
+     *
+     * @return \App\Contracts\PostContract
+     */
+    public function setAttachments(array $attachments)
+    {
+        $validAttachments = collect($attachments)->map(function ($attachment) {
+            if (empty($attachment['type']) || empty($attachment['params'])) {
+                return null;
+            }
+
+            return [
+                'type' => Str::lower($attachment['type']),
+                'params' => $attachment['params'],
+            ];
+        });
+
+        $this->update([
+            'attachments' => $validAttachments->reject(null)->toArray(),
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * Удаляет все прикрепления от записи.
+     *
+     * @return \App\Contracts\PostContract
+     */
+    public function removeAttachments()
+    {
+        $this->update(['attachments' => null]);
+
+        return $this;
     }
 
     /**

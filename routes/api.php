@@ -43,4 +43,15 @@ Route::group(['middleware' => 'auth'], function () {
             'destroy' => 'api.bots.destroy',
         ],
     ]);
+
+    Route::resource('/posts', 'PostsController', [
+        'only' => ['index', 'store', 'show', 'update', 'destroy'],
+        'names' => [
+            'index' => 'api.posts.index',
+            'store' => 'api.posts.store',
+            'show' => 'api.posts.show',
+            'update' => 'api.posts.update',
+            'destroy' => 'api.posts.destroy',
+        ],
+    ]);
 });
