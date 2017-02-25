@@ -4,7 +4,9 @@ php:
 - 7.1
 sudo: false
 before_install:
+  - cp .env.travis .env
   - composer self-update
   - composer install --no-interaction --prefer-dist --no-suggest
+  - php artisan key:generate
 script:
   - vendor/bin/phpunit
