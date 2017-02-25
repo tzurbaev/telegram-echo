@@ -23,7 +23,7 @@ class ChannelMembersTest extends TestCase
         $user = factory(User::class)->create();
         $channels = app(ChannelsFactoryContract::class);
 
-        $channel = $channels->make($user, 'My Channel');
+        $channel = $channels->make($user, 'My Channel', '@telegram');
 
         $this->assertInstanceOf(Channel::class, $channel);
         $this->assertTrue($channel->hasMember($user));
@@ -42,7 +42,7 @@ class ChannelMembersTest extends TestCase
         $secondUser = factory(User::class)->create();
         $channels = app(ChannelsFactoryContract::class);
 
-        $channel = $channels->make($user, 'My Channel');
+        $channel = $channels->make($user, 'My Channel', '@telegram');
         $this->assertSame(1, $channel->membersCount());
 
         $channel->addMember($secondUser);
@@ -63,7 +63,7 @@ class ChannelMembersTest extends TestCase
         $secondUser = factory(User::class)->create();
         $channels = app(ChannelsFactoryContract::class);
 
-        $channel = $channels->make($user, 'My Channel');
+        $channel = $channels->make($user, 'My Channel', '@telegram');
 
         $channel->addMember($secondUser);
         $this->assertSame(2, $channel->membersCount());
@@ -84,7 +84,7 @@ class ChannelMembersTest extends TestCase
         $user = factory(User::class)->create();
         $channels = app(ChannelsFactoryContract::class);
 
-        $channel = $channels->make($user, 'My Channel');
+        $channel = $channels->make($user, 'My Channel', '@telegram');
 
         $this->expectException(InvalidArgumentException::class);
         $channel->addMember($user);
@@ -103,7 +103,7 @@ class ChannelMembersTest extends TestCase
         $secondUser = factory(User::class)->create();
         $channels = app(ChannelsFactoryContract::class);
 
-        $channel = $channels->make($user, 'My Channel');
+        $channel = $channels->make($user, 'My Channel', '@telegram');
 
         $this->assertTrue($channel->isCreator($user));
         $this->assertFalse($channel->isCreator($secondUser));

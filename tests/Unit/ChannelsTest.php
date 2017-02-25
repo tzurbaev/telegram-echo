@@ -23,7 +23,7 @@ class ChannelsTest extends TestCase
         $channels = app(ChannelsFactoryContract::class);
         $user = factory(User::class)->create();
 
-        $channel = $channels->make($user, 'My Channel');
+        $channel = $channels->make($user, 'My Channel', '@telegram');
         $this->assertInstanceOf(Channel::class, $channel);
     }
 }

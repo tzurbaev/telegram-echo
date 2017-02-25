@@ -46,6 +46,16 @@ class Channel extends Model implements ChannelContract
     }
 
     /**
+     * Проверяет, привязан ли бот к каналу.
+     *
+     * @return bool
+     */
+    public function hasBot(): bool
+    {
+        return intval($this->bot_id) !== 0;
+    }
+
+    /**
      * Идентификатор чата.
      *
      * @return int|string

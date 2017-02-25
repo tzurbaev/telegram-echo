@@ -8,11 +8,19 @@ use App\Channel;
 use Tests\TestCase;
 use Telegram\Bot\Api;
 use App\Transports\TelegramTransport;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class BotsTest extends TestCase
 {
     use DatabaseMigrations;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        Event::fake();
+    }
 
     protected function tearDown()
     {

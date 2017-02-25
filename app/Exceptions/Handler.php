@@ -4,6 +4,9 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
+use App\Exceptions\Http\EmptyRequestException;
+use App\Exceptions\Api\UserWasNotFoundException;
+use App\Exceptions\Api\ChannelWasNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -44,6 +47,23 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof ChannelWasNotFoundException) {
+            return response()->json([
+                'error' => 'Channel was not found.',
+                'code' => 'channel_not_found',
+            ], 404);
+        } elseif ($exception instanceof UserWasNotFoundException) {
+            return response()->json([
+                'error' => 'User was not found.',
+                'code' => 'user_not_found',
+            ], 404);
+        } elseif ($exception instanceof EmptyRequestException) {
+            return response()->json([
+                'error' => 'Empty request received.',
+                'code' => 'empty_request',
+            ], 422);
+        }
+
         return parent::render($request, $exception);
     }
 
