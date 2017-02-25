@@ -3,8 +3,6 @@
 namespace App\Listeners\Auth;
 
 use App\Events\Auth\PasswordChanged;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Notifications\PasswordChangedNotification;
 
 class SendPasswordChangedWarning

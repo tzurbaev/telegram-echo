@@ -16,7 +16,7 @@ class ChannelMembersController extends Controller
      * Display a listing of the resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param int $id
+     * @param  int                       $id
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request, $id)
@@ -36,8 +36,8 @@ class ChannelMembersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\AddMemberToChannel  $request
-     * @param int $id
+     * @param  \App\Http\Requests\AddMemberToChannel $request
+     * @param  int                                   $id
      * @return \Illuminate\Http\Response
      */
     public function store(AddMemberToChannel $request, $id)
@@ -61,8 +61,8 @@ class ChannelMembersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Http\Requests\RemoveMemberFromChannel $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\RemoveMemberFromChannel $request
+     * @param  int                                        $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(RemoveMemberFromChannel $request, $id)

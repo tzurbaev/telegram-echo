@@ -14,7 +14,7 @@ class ChannelsFactory implements ChannelsFactoryContract
      *
      * @param \App\Contracts\UserContract $user
      * @param string                      $name
-     * @param string|int $chatId
+     * @param string|int                  $chatId
      *
      * @return \App\Contracts\ChannelContract
      */

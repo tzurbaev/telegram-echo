@@ -19,7 +19,7 @@ class TelegramNotificationsSender
 
     /**
      * @param \Telegram\Bot\Api $telegram
-     * @param string $chatId
+     * @param string            $chatId
      */
     public function __construct(Api $telegram, string $chatId)
     {

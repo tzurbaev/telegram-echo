@@ -16,7 +16,7 @@ class Controller extends BaseController
      * Возвращает поля запроса без NULL-значений.
      *
      * @param \Illuminate\Http\Request $request
-     * @param array $fields
+     * @param array                    $fields
      *
      * @return array
      */

@@ -5,9 +5,7 @@ namespace Tests\Feature;
 use App\User;
 use Tests\TestCase;
 use App\Contracts\Channels\ChannelsFactoryContract;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ChannelMembersApiTest extends TestCase
 {

@@ -3,9 +3,7 @@
 namespace App\Listeners\Auth;
 
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Queue\InteractsWithQueue;
 use App\Notifications\WelcomeNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SendWelcomeEmail
 {

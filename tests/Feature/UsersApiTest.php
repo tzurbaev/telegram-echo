@@ -10,9 +10,7 @@ use App\Jobs\SendTelegramNotification;
 use App\Notifications\WelcomeNotification;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\PasswordChangedNotification;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UsersApiTest extends TestCase
 {

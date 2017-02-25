@@ -30,7 +30,7 @@ class ChannelsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreChannel  $request
+     * @param  \App\Http\Requests\StoreChannel $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreChannel $request, ChannelsFactoryContract $channels)
@@ -46,7 +46,7 @@ class ChannelsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int                       $id
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
@@ -66,8 +66,8 @@ class ChannelsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateChannel  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\UpdateChannel $request
+     * @param  int                              $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateChannel $request, $id)
@@ -96,7 +96,7 @@ class ChannelsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \Illuminate\Http\Request
-     * @param  int  $id
+     * @param  int                       $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $id)
