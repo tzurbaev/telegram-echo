@@ -5,6 +5,13 @@ namespace App\Contracts;
 interface BotContract
 {
     /**
+     * ID бота.
+     *
+     * @return int
+     */
+    public function id(): int;
+
+    /**
      * Запускает отправку сообщения в канал.
      *
      * @param string $message = null

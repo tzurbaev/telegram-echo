@@ -10,16 +10,15 @@ class SendRegisteredNotification
     /**
      * Handle the event.
      *
-     * @param  Registered $event
-     * @return void
+     * @param \Illuminate\Auth\Events\Registered $event
      */
     public function handle(Registered $event)
     {
         $message = trans('notifications.users.registered', [
-            'name' => $event->user->name,
-            'email' => $event->user->email,
+            'name' => $event->user->name(),
+            'email' => $event->user->email(),
         ]);
 
-        dispatch(new SendTelegramNotification('users.registered.'.$event->user->id, $message));
+        dispatch(new SendTelegramNotification('users.registered.'.$event->user->id(), $message));
     }
 }

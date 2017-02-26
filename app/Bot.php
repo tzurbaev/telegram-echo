@@ -29,6 +29,16 @@ class Bot extends Model implements BotContract
     ];
 
     /**
+     * ID бота.
+     *
+     * @return int
+     */
+    public function id(): int
+    {
+        return intval($this->attributes['id']);
+    }
+
+    /**
      * Запускает отправку сообщения в канал.
      *
      * @param string $message = null
@@ -47,6 +57,6 @@ class Bot extends Model implements BotContract
      */
     public function apiToken(): string
     {
-        return $this->token;
+        return $this->attributes['token'];
     }
 }

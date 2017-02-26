@@ -84,7 +84,7 @@ class TelegramTransport implements TransportContract
             Log::error('[TelegramTransport@performRequest] Telegram API: request failed.', [
                 'exception' => $e,
                 'method' => $method,
-                'bot_id' => $bot->id,
+                'bot_id' => $bot->id(),
                 'payload' => $payload,
             ]);
 

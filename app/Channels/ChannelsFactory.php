@@ -2,7 +2,6 @@
 
 namespace App\Channels;
 
-use App\Channel;
 use Illuminate\Support\Str;
 use App\Contracts\UserContract;
 use App\Contracts\Channels\ChannelsFactoryContract;
@@ -20,8 +19,7 @@ class ChannelsFactory implements ChannelsFactoryContract
      */
     public function make(UserContract $user, string $name, $chatId)
     {
-        $channel = Channel::create([
-            'user_id' => $user->id,
+        $channel = $user->channels()->create([
             'slug' => Str::slug($name),
             'name' => $name,
             'chat_id' => $chatId,

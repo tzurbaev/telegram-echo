@@ -16,6 +16,7 @@ class BotsController extends Controller
      * Display a listing of the resource.
      *
      * @param \Illuminate\Http\Request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -31,7 +32,8 @@ class BotsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreBot $request
+     * @param \App\Http\Requests\StoreBot $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(StoreBot $request)
@@ -48,7 +50,8 @@ class BotsController extends Controller
      * Display the specified resource.
      *
      * @param \Illuminate\Http\Request
-     * @param  int                       $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
@@ -68,8 +71,9 @@ class BotsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateBot $request
-     * @param  int                          $id
+     * @param \App\Http\Requests\UpdateBot $request
+     * @param int                          $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateBot $request, $id)
@@ -98,7 +102,8 @@ class BotsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \Illuminate\Http\Request
-     * @param  int                       $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $id)

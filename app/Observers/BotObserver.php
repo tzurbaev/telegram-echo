@@ -2,19 +2,19 @@
 
 namespace App\Observers;
 
-use App\Contracts\BotContract;
+use App\Bot;
 use App\Events\Bots\BotCreated;
 
 class BotObserver
 {
-    public function creating(BotContract $bot)
+    public function creating(Bot $bot)
     {
         $bot->external_id = 0;
 
         return $bot;
     }
 
-    public function created(BotContract $bot)
+    public function created(Bot $bot)
     {
         event(new BotCreated($bot));
     }

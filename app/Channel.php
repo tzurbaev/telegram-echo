@@ -30,6 +30,16 @@ class Channel extends Model implements ChannelContract
     protected $with = ['members'];
 
     /**
+     * ID канала.
+     *
+     * @return int
+     */
+    public function id(): int
+    {
+        return intval($this->attributes['id']);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function bot()
@@ -85,7 +95,7 @@ class Channel extends Model implements ChannelContract
     protected function getMemberIndex(UserContract $user)
     {
         return $this->members->search(function (UserContract $member) use ($user) {
-            return $member->id === $user->id;
+            return $member->id() === $user->id();
         });
     }
 
@@ -120,7 +130,7 @@ class Channel extends Model implements ChannelContract
      */
     public function isCreator(UserContract $user): bool
     {
-        return $this->user_id === $user->id;
+        return $this->user_id === $user->id();
     }
 
     /**
@@ -136,11 +146,11 @@ class Channel extends Model implements ChannelContract
     {
         if ($this->hasMember($user)) {
             throw new InvalidArgumentException(
-                'Given user '.$user->email.' is already member of '.$this->name.' ('.$this->id.') channel.'
+                'Given user '.$user->email().' is already member of '.$this->name.' ('.$this->id.') channel.'
             );
         }
 
-        $this->members()->attach($user->id);
+        $this->members()->attach($user->id());
         $this->load('members');
 
         return $this;
@@ -159,7 +169,7 @@ class Channel extends Model implements ChannelContract
             return $this;
         }
 
-        $this->members()->detach($user->id);
+        $this->members()->detach($user->id());
         $this->load('members');
 
         return $this;

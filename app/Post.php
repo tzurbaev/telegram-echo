@@ -100,6 +100,16 @@ class Post extends Model implements PostContract
     }
 
     /**
+     * Текст записи.
+     *
+     * @return string
+     */
+    public function getMessage(): string
+    {
+        return $this->message ?? '';
+    }
+
+    /**
      * Прикрепляет медиа к записи.
      *
      * @param array $attachments

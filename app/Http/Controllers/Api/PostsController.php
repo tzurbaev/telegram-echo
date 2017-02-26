@@ -18,7 +18,8 @@ class PostsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -34,7 +35,8 @@ class PostsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StorePost $request
+     * @param \App\Http\Requests\StorePost $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(StorePost $request)
@@ -60,26 +62,27 @@ class PostsController extends Controller
 
         $post->shouldBePublishedWith($channel->bot, $channel);
 
-        $publicationDispatched = false;
+        $jobDispatched = false;
 
         if ($post->canBePublishedNow()) {
             dispatch(new PublishScheduledPost($post));
 
-            $publicationDispatched = true;
+            $jobDispatched = true;
         }
 
         return response()->json([
             'success' => 1,
             'data' => fractal($post, new PostTransformer())->toArray(),
-            'publication_dispatched' => $publicationDispatched ? 1 : 0,
+            'publication_dispatched' => $jobDispatched ? 1 : 0,
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int                       $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
@@ -99,8 +102,9 @@ class PostsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int                       $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(UpdatePost $request, $id)
@@ -140,8 +144,9 @@ class PostsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int                       $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $id)

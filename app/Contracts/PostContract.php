@@ -28,6 +28,13 @@ interface PostContract
     public function getOwner();
 
     /**
+     * Текст записи.
+     *
+     * @return string
+     */
+    public function getMessage(): string;
+
+    /**
      * Прикрепляет медиа к записи.
      *
      * @param array $attachments

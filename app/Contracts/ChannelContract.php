@@ -5,6 +5,13 @@ namespace App\Contracts;
 interface ChannelContract
 {
     /**
+     * ID канала.
+     *
+     * @return int
+     */
+    public function id(): int;
+
+    /**
      * Проверяет, привязан ли бот к каналу.
      *
      * @return bool
