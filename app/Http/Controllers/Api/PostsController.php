@@ -19,7 +19,7 @@ class PostsController extends Controller
      * Display a listing of the resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -35,7 +35,7 @@ class PostsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StorePost $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(StorePost $request)
     {
@@ -80,7 +80,7 @@ class PostsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int                       $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $id)
     {
@@ -101,7 +101,7 @@ class PostsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int                       $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(UpdatePost $request, $id)
     {
@@ -142,7 +142,7 @@ class PostsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int                       $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $id)
     {

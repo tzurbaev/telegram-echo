@@ -16,7 +16,7 @@ class ChannelsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -32,7 +32,7 @@ class ChannelsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreChannel $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreChannel $request, ChannelsFactoryContract $channels)
     {
@@ -52,7 +52,7 @@ class ChannelsController extends Controller
      * Display the specified resource.
      *
      * @param  int                       $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $id)
     {
@@ -73,7 +73,7 @@ class ChannelsController extends Controller
      *
      * @param  \App\Http\Requests\UpdateChannel $request
      * @param  int                              $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(UpdateChannel $request, $id)
     {
