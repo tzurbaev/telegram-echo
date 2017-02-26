@@ -25,8 +25,6 @@ class PublishScheduledPosts extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
     public function handle()
     {
@@ -36,7 +34,7 @@ class PublishScheduledPosts extends Command
         $posts = Post::shouldBePublishedBetween($from, $till)->get();
 
         if (!count($posts)) {
-            return true;
+            return;
         }
 
         $this->info('Got '.count($posts).' pending posts.');

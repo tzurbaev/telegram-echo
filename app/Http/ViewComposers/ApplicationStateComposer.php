@@ -4,10 +4,10 @@ namespace App\Http\ViewComposers;
 
 use Illuminate\View\View;
 use App\Transformers\BotTransformer;
+use Illuminate\Support\Facades\Auth;
 use App\Transformers\PostTransformer;
 use App\Transformers\UserTransformer;
 use App\Transformers\ChannelTransformer;
-use Spatie\Fractalistic\ArraySerializer;
 
 class ApplicationStateComposer
 {
@@ -28,14 +28,12 @@ class ApplicationStateComposer
      */
     public function compose(View $view)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
-        $userItem = fractal($user, new UserTransformer())->serializeWith(new ArraySerializer());
-        $channels = fractal($user->channels, new ChannelTransformer())
-            ->serializeWith(new ArraySerializer())
-            ->includeBot();
-        $bots = fractal($user->bots, new BotTransformer())->serializeWith(new ArraySerializer());
-        $posts = fractal($user->posts, new PostTransformer())->serializeWith(new ArraySerializer());
+        $userItem = fractal($user, new UserTransformer());
+        $channels = fractal($user->channels, new ChannelTransformer());
+        $bots = fractal($user->bots, new BotTransformer());
+        $posts = fractal($user->posts, new PostTransformer());
 
         $this->state
             ->put('application', $this->getApplication())

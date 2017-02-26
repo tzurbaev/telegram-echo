@@ -46,7 +46,7 @@ class Post extends Model implements PostContract
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Concerns\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function bot()
     {

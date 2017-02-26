@@ -14,9 +14,9 @@ class DateTimeHelper
      * Для корректной работы на сервере должны быть установлены необходимые
      * системные локали (список доступен в config/locales.php).
      *
-     * @param string $type
+     * @param string         $type
      * @param \Carbon\Carbon $date
-     * @param string $locale = null
+     * @param string         $locale = null
      *
      * @return string
      */
