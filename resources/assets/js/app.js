@@ -1,20 +1,81 @@
+import Vue from 'vue'
+import Vuex from 'vuex'
+import components from './components'
 
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+Vue.use(Vuex)
 
-require('./bootstrap');
+const store = new Vuex.Store({
+    state: window.Application.state,
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+    getters: {
+        application(state) {
+            return state.application
+        },
 
-Vue.component('example', require('./components/Example.vue'));
+        routes(state) {
+            return state.application.routes
+        },
+
+        user(state) {
+            return state.user
+        },
+
+        canCreatePosts(state) {
+            return state.channels.length > 0
+        },
+
+        channelsList(state) {
+            return state.channels
+        },
+
+        botsLists(state) {
+            return state.bots
+        },
+
+        postsList(state) {
+            return state.posts
+        }
+    },
+
+    mutations: {
+        addBot(state, bot) {
+            state.bots.push(bot)
+        },
+
+        removeBot(state, id) {
+            state.bots = state.bots.filter(bot => bot.id !== id)
+        },
+
+        addChannel(state, channel) {
+            state.channels.push(channel)
+        },
+
+        removeChannel(state, id) {
+            state.channels = state.channels.filter(channel => channel.id !== id)
+        },
+
+        addPost(state, post) {
+            state.posts.push(post)
+        },
+
+        removePost(state, id) {
+            state.posts = state.posts.filter(post => post.id !== id)
+        },
+    }
+})
 
 const app = new Vue({
-    el: '#app'
-});
+    el: '#app',
+    store,
+    components,
+    data: {
+        sharedEventBus: new Vue(),
+    }
+})
+
+window.axios = require('axios')
+
+window.axios.defaults.headers.common = {
+    'X-CSRF-TOKEN': window.Application.csrfToken,
+    'X-Requested-With': 'XMLHttpRequest',
+}

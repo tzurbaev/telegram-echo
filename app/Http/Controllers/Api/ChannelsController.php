@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreChannel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateChannel;
+use App\Transformers\ChannelTransformer;
 use App\Exceptions\Http\EmptyRequestException;
 use App\Contracts\Channels\ChannelsFactoryContract;
 use App\Exceptions\Api\ChannelWasNotFoundException;
@@ -23,7 +24,7 @@ class ChannelsController extends Controller
 
         return response()->json([
             'success' => 1,
-            'data' => $channels,
+            'data' => fractal($channels, new ChannelTransformer())->toArray(),
         ]);
     }
 
@@ -39,10 +40,11 @@ class ChannelsController extends Controller
 
         $channel = $channels->make($request->user(), $request->input('name'), $request->input('chat_id'));
         $channel->bot()->associate($bot);
+        $channel->save();
 
         return response()->json([
             'success' => 1,
-            'data' => $channel,
+            'data' => fractal($channel, new ChannelTransformer())->toArray(),
         ]);
     }
 
@@ -62,7 +64,7 @@ class ChannelsController extends Controller
 
         return response()->json([
             'success' => 1,
-            'data' => $channel,
+            'data' => fractal($channel, new ChannelTransformer())->toArray(),
         ]);
     }
 
@@ -81,7 +83,7 @@ class ChannelsController extends Controller
             throw new ChannelWasNotFoundException();
         }
 
-        $fields = $this->withoutNulls($request, ['name', 'chat_id']);
+        $fields = $this->withoutNulls($request, ['name', 'chat_id', 'bot_id']);
 
         if (!count($fields)) {
             throw new EmptyRequestException();
@@ -91,7 +93,7 @@ class ChannelsController extends Controller
 
         return response()->json([
             'success' => 1,
-            'data' => $channel,
+            'data' => fractal($channel, new ChannelTransformer())->toArray(),
         ]);
     }
 

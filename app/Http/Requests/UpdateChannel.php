@@ -51,7 +51,7 @@ class UpdateChannel extends FormRequest
                 'max:255',
                 Rule::unique('channels')->ignore($this->route('channel')),
             ],
-            'bot_id' => 'integer|exists:bots',
+            'bot_id' => 'integer|exists:bots,id',
         ];
     }
 }

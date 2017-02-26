@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Telegram\Bot\Api;
 use App\Posts\Publisher;
 use App\Channels\ChannelsFactory;
 use Illuminate\Support\ServiceProvider;
@@ -32,7 +33,9 @@ class AppServiceProvider extends ServiceProvider
             $token = $app['config']->get('telegram.token');
             $chatId = $app['config']->get('telegram.chat');
 
-            return new TelegramNotificationsSender($token, $chatId);
+            $telegram = new Api($token);
+
+            return new TelegramNotificationsSender($telegram, $chatId);
         });
 
         $this->bindContractsToImplementations();

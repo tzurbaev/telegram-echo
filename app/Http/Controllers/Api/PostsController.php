@@ -9,6 +9,7 @@ use App\Http\Requests\StorePost;
 use App\Http\Requests\UpdatePost;
 use App\Jobs\PublishScheduledPost;
 use App\Http\Controllers\Controller;
+use App\Transformers\PostTransformer;
 use App\Exceptions\Api\BotWasNotFoundException;
 use App\Exceptions\Api\PostWasNotFoundException;
 
@@ -26,7 +27,7 @@ class PostsController extends Controller
 
         return response()->json([
             'success' => 1,
-            'data' => $posts,
+            'data' => fractal($posts, new PostTransformer())->toArray(),
         ]);
     }
 
@@ -47,6 +48,7 @@ class PostsController extends Controller
         $scheduledAt = $this->extractScheduledPostDate($request);
 
         $post = $request->user()->posts()->create([
+            'title' => $request->input('title'),
             'message' => $request->input('message'),
             'scheduled_at' => $scheduledAt,
             'published_at' => null,
@@ -68,7 +70,7 @@ class PostsController extends Controller
 
         return response()->json([
             'success' => 1,
-            'data' => $post,
+            'data' => fractal($post, new PostTransformer())->toArray(),
             'publication_dispatched' => $publicationDispatched ? 1 : 0,
         ]);
     }
@@ -90,7 +92,7 @@ class PostsController extends Controller
 
         return response()->json([
             'success' => 1,
-            'data' => $post,
+            'data' => fractal($post, new PostTransformer())->toArray(),
         ]);
     }
 
@@ -106,7 +108,7 @@ class PostsController extends Controller
         $post = $request->user()->posts()->find($id);
 
         $scheduledAt = $this->extractScheduledPostDate($request);
-        $fields = $this->withoutNulls($request, ['channel_id', 'message']);
+        $fields = $this->withoutNulls($request, ['channel_id', 'title', 'message']);
 
         $post->update(array_merge($fields, [
             'scheduled_at' => $scheduledAt,
@@ -130,7 +132,7 @@ class PostsController extends Controller
 
         return response()->json([
             'success' => 1,
-            'data' => $post,
+            'data' => fractal($post, new PostTransformer())->toArray(),
             'publication_dispatched' => $publicationDispatched,
         ]);
     }

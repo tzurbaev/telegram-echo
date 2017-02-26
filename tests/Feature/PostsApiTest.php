@@ -43,6 +43,7 @@ class PostsApiTest extends TestCase
 
         $payload = [
             'channel_id' => $channel->id,
+            'title' => 'Hello world',
             'message' => 'Hello world',
             'attachments' => [
                 ['type' => 'photo', 'params' => ['https://example.org/example.jpg']],

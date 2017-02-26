@@ -11,5 +11,20 @@ const { mix } = require('laravel-mix');
  |
  */
 
+mix.disableNotifications()
+mix.options({
+    processCssUrls: false,
+})
+
 mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+   .combine([
+        'resources/assets/css/semantic.css',
+        'node_modules/font-awesome/css/font-awesome.css',
+    ], 'public/css/vendor.css')
+   .combine([
+        'resources/assets/scripts/jquery-3.1.1.min.js',
+        'resources/assets/scripts/semantic.js',
+    ], 'public/js/vendor.js')
+   .less('resources/assets/less/app.less', 'public/css')
+   .copy('resources/assets/css/themes', 'public/css/themes', false)
+   .copy('node_modules/font-awesome/fonts', 'public/fonts', false)

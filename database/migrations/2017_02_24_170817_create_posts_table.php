@@ -18,6 +18,7 @@ class CreatePostsTable extends Migration
             $table->unsignedInteger('user_id')->index();
             $table->unsignedInteger('channel_id')->default(0)->index();
             $table->unsignedInteger('bot_id')->default(0)->index();
+            $table->string('title')->default('');
             $table->mediumText('message')->nullable();
             $table->text('attachments')->nullable();
             $table->timestamp('scheduled_at')->nullable()->index();

@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 class Post extends Model implements PostContract
 {
     protected $fillable = [
-        'user_id', 'channel_id', 'bot_id', 'message',
+        'user_id', 'channel_id', 'bot_id', 'title', 'message',
         'attachments', 'scheduled_at', 'published_at',
     ];
 
@@ -27,6 +27,8 @@ class Post extends Model implements PostContract
     protected $dates = [
         'scheduled_at', 'published_at', 'created_at', 'updated_at',
     ];
+
+    protected $with = ['channel'];
 
     /**
      * Скоуп для выборки записей, которые могут быть опубликованы в текущем запросе.

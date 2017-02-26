@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreBot;
 use App\Http\Requests\UpdateBot;
 use App\Http\Controllers\Controller;
+use App\Transformers\BotTransformer;
 use App\Exceptions\Http\EmptyRequestException;
 use App\Exceptions\Api\BotWasNotFoundException;
 
@@ -39,7 +40,7 @@ class BotsController extends Controller
 
         return response()->json([
             'success' => 1,
-            'data' => $bot,
+            'data' => fractal($bot, new BotTransformer())->toArray(),
         ]);
     }
 
