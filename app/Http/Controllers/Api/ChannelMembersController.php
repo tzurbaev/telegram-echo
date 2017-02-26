@@ -18,7 +18,7 @@ class ChannelMembersController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param int                      $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request, $id)
     {
@@ -40,7 +40,7 @@ class ChannelMembersController extends Controller
      * @param \App\Http\Requests\AddMemberToChannel $request
      * @param int                                   $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(AddMemberToChannel $request, $id)
     {
@@ -66,7 +66,7 @@ class ChannelMembersController extends Controller
      * @param \App\Http\Requests\RemoveMemberFromChannel $request
      * @param int                                        $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(RemoveMemberFromChannel $request, $id)
     {

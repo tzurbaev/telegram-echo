@@ -33,7 +33,7 @@ class ChannelsController extends Controller
      *
      * @param \App\Http\Requests\StoreChannel $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreChannel $request, ChannelsFactoryContract $channels)
     {
@@ -55,7 +55,7 @@ class ChannelsController extends Controller
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $id)
     {
@@ -77,7 +77,7 @@ class ChannelsController extends Controller
      * @param \App\Http\Requests\UpdateChannel $request
      * @param int                              $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(UpdateChannel $request, $id)
     {
