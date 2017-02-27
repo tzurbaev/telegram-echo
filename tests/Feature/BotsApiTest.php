@@ -112,16 +112,16 @@ class BotsApiTest extends TestCase
         $this->actingAs($user);
 
         $payload = [
-            'name' => 'Telegram Echo Bot',
+            'token' => 'new-token',
         ];
 
         $this->json('PUT', route('api.bots.update', ['bot' => $bot->id]), $payload)
             ->assertStatus(200)
             ->assertJsonFragment([
-                'name' => 'Telegram Echo Bot',
+                'id' => $bot->id,
             ]);
 
-        $this->assertSame('Telegram Echo Bot', $bot->fresh()->name);
+        $this->assertSame('new-token', $bot->fresh()->token);
     }
 
     public function testBotCanBeDeletedViaApi()
