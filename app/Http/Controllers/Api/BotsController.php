@@ -38,7 +38,12 @@ class BotsController extends Controller
      */
     public function store(StoreBot $request)
     {
-        $bot = $request->user()->bots()->create($request->only(['name', 'username', 'token']));
+        $bot = $request->user()->bots()->create([
+            'external_id' => 0,
+            'name' => '',
+            'username' => '',
+            'token' => $request->input('token'),
+        ]);
 
         return response()->json([
             'success' => 1,
@@ -84,7 +89,7 @@ class BotsController extends Controller
             throw new BotWasNotFoundException();
         }
 
-        $fields = $this->withoutNulls($request, ['name', 'username', 'token']);
+        $fields = $this->withoutNulls($request, ['token']);
 
         if (!count($fields)) {
             throw new EmptyRequestException();

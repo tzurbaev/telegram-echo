@@ -3,44 +3,35 @@
     <div class="ui modal" :id="modalId">
       <div class="header">{{ formTitle }}</div>
       <div class="content">
-        <div class="ui message">
-          Возникли вопросы? Прочитайте <a href="javascript:;">руководство по созданию Telegram-ботов</a>.
-        </div>
-        <div class="ui form" :class="{'error': hasFormError}">
-          <div class="field" :class="{'error': hasNameError}">
-            <label>Название</label>
-            <input type="text" placeholder="" v-model="form.name">
+        <template v-if="type === 'create'">
+          <div class="ui message">
+            Возникли вопросы? Прочитайте <a href="javascript:;">руководство по созданию Telegram-ботов</a>.
           </div>
-          <div v-if="hasNameError" class="ui error message">
-            <p>Необходимо указать имя бота. Имя может быть произвольным.</p>
+          <div class="ui form create-bot-form" :class="{'error': hasFormError}">
+            <div class="field" :class="{'error': hasTokenError}">
+              <label>Токен</label>
+              <input type="text" placeholder="" v-model="form.token">
+            </div>
+            <div v-if="hasTokenError" class="ui error message">
+              <p>Необходимо указать токен. Токен имеет вид <code>12345:ABCD</code>.</p>
+            </div>
           </div>
-          <div class="field" :class="{'error': hasUsernameError}">
-            <label>Юзернейм бота</label>
-            <input type="text" placeholder="" v-model="form.username">
-          </div>
-          <div v-if="hasUsernameError" class="ui error message">
-            <p>Необходимо указать юзернейм бота.</p>
-            <p>Юзернейм - это имя, по которому можно обратиться к боту в чате. Он начинается с символа "@" и заканчивается словом "bot".</p>
-          </div>
-          <div class="field" :class="{'error': hasTokenError}">
-            <label>Токен</label>
-            <input type="text" placeholder="" v-model="form.token">
-          </div>
-          <div v-if="hasTokenError" class="ui error message">
-            <p>Необходимо указать токен. Токен имеет вид <code>12345:ABCD</code>.</p>
-          </div>
-          <button type="button" class="ui primary button" @click="submitForm" :disabled="formIsBusy">
-            <i class="fa fa-save"></i>
-            Сохранить
-          </button>
-          <button v-if="type === 'edit'" type="button" class="ui red button" @click="deleteBot" :disabled="formIsBusy">
-            <i class="fa fa-trash"></i>
-            Удалить
-          </button>
-          <button type="button" class="ui default button" @click="closeModal" :disabled="formIsBusy">
-            Отменить
-          </button>
-        </div>
+        </template>
+        <template v-else>
+          <p>Вы уверены, что хотите удалить этого бота?</p>
+        </template>
+
+        <button v-if="type === 'create'" type="button" class="ui primary button" @click="submitForm" :disabled="formIsBusy">
+          <i class="fa fa-save"></i>
+          Сохранить
+        </button>
+        <button v-if="type === 'edit'" type="button" class="ui red button" @click="deleteBot" :disabled="formIsBusy">
+          <i class="fa fa-trash"></i>
+          Удалить
+        </button>
+        <button type="button" class="ui default button" @click="closeModal" :disabled="formIsBusy">
+          Отменить
+        </button>
       </div>
     </div>
   </div>
@@ -70,7 +61,7 @@ export default {
     },
 
     hasFormError() {
-      return this.hasNameError || this.hasUsernameError || this.hasTokenError
+      return this.hasTokenError
     },
 
     formTitle() {
@@ -78,7 +69,7 @@ export default {
         return 'Добавление нового бота'
       }
 
-      return `Редактирование бота ${this.bot.name}`
+      return `Удаление бота ${this.bot.name}`
     }
   },
 
@@ -104,8 +95,6 @@ export default {
     initForm(bot) {
       this.type = 'create'
       this.form = {
-        name: '',
-        username: '',
         token: '',
       }
 
@@ -113,8 +102,6 @@ export default {
         this.type = 'edit'
         this.bot = bot
         this.form = {
-          name: bot.name,
-          username: bot.username,
           token: bot.token,
         }
       }
@@ -125,25 +112,11 @@ export default {
     },
 
     resetErrors() {
-      this.hasNameError = false
-      this.hasUsernameError = false
       this.hasTokenError = false
     },
 
     validate() {
       this.resetErrors()
-
-      if (!this.form.name.trim()) {
-        this.hasNameError = true
-
-        return false
-      }
-
-      if (!this.form.username.trim()) {
-        this.hasUsernameError = true
-
-        return false
-      }
 
       if (!this.form.token.trim()) {
         this.hasTokenError = true
@@ -199,8 +172,6 @@ export default {
       type: 'create',
       bot: {},
       form: {
-        name: '',
-        username: '',
         token: '',
       },
       formIsBusy: false,

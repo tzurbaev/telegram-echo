@@ -24,8 +24,6 @@ class UpdateBot extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'string|max:255',
-            'username' => 'string|max:255',
             'token' => 'string|max:255',
         ];
     }
