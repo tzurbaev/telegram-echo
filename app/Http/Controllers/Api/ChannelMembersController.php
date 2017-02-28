@@ -4,39 +4,37 @@ namespace App\Http\Controllers\Api;
 
 use App\User;
 use App\Channel;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AddMemberToChannel;
-use App\Http\Requests\RemoveMemberFromChannel;
 use App\Exceptions\Api\UserWasNotFoundException;
+use App\Http\Requests\AddMemberToChannelRequest;
+use App\Http\Requests\RemoveMemberFromChannelRequest;
 
 class ChannelMembersController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Channel             $channel
+     * @param \App\Channel $channel
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request, Channel $channel)
+    public function index(Channel $channel)
     {
         return response()->json([
             'success' => 1,
-            'data' => $channel->members,
+            'data' => $channel->getMembers(),
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\AddMemberToChannel $request
-     * @param \App\Channel                          $channel
+     * @param \App\Http\Requests\AddMemberToChannelRequest $request
+     * @param \App\Channel                                 $channel
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(AddMemberToChannel $request, Channel $channel)
+    public function store(AddMemberToChannelRequest $request, Channel $channel)
     {
         $user = User::find($request->input('user_id'));
 
@@ -48,19 +46,19 @@ class ChannelMembersController extends Controller
 
         return response()->json([
             'success' => 1,
-            'data' => $channel->members,
+            'data' => $channel->getMembers(),
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Http\Requests\RemoveMemberFromChannel $request
-     * @param \App\Channel                               $channel
+     * @param \App\Http\Requests\RemoveMemberFromChannelRequest $request
+     * @param \App\Channel                                      $channel
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(RemoveMemberFromChannel $request, Channel $channel)
+    public function destroy(RemoveMemberFromChannelRequest $request, Channel $channel)
     {
         $user = User::find($request->input('user_id'));
 
@@ -72,7 +70,7 @@ class ChannelMembersController extends Controller
 
         return response()->json([
             'success' => 1,
-            'data' => $channel->members,
+            'data' => $channel->getMembers(),
         ]);
     }
 }

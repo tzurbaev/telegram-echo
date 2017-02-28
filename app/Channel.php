@@ -110,6 +110,16 @@ class Channel extends Model implements ChannelContract
     }
 
     /**
+     * Возвращает список участников канала.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getMembers()
+    {
+        return $this->members;
+    }
+
+    /**
      * Количество участников канала.
      *
      * @return int

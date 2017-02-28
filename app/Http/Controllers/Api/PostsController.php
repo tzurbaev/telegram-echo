@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Post;
 use Illuminate\Http\Request;
 use App\Helpers\DateTimeHelper;
-use App\Http\Requests\StorePost;
-use App\Http\Requests\UpdatePost;
+use App\Http\Requests\StorePostRequest;
 use App\Jobs\PublishScheduledPost;
 use App\Http\Controllers\Controller;
 use App\Transformers\PostTransformer;
+use App\Http\Requests\UpdatePostRequest;
 use App\Contracts\Posts\PostsFactoryContract;
 
 class PostsController extends Controller
@@ -34,12 +34,12 @@ class PostsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\StorePost              $request
+     * @param \App\Http\Requests\StorePostRequest       $request
      * @param \App\Contracts\Posts\PostsFactoryContract $posts
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(StorePost $request, PostsFactoryContract $posts, DateTimeHelper $dates)
+    public function store(StorePostRequest $request, PostsFactoryContract $posts, DateTimeHelper $dates)
     {
         $post = $request->createPost($posts, $dates);
 
@@ -63,12 +63,11 @@ class PostsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Post                $post
+     * @param \App\Post $post
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Request $request, Post $post)
+    public function show(Post $post)
     {
         return response()->json([
             'success' => 1,
@@ -79,12 +78,12 @@ class PostsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request    $request
-     * @param \App\Helpers\DateTimeHelper $dates
+     * @param \App\Http\Requests\UpdatePostRequest $request
+     * @param \App\Helpers\DateTimeHelper          $dates
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdatePost $request, DateTimeHelper $dates)
+    public function update(UpdatePostRequest $request, DateTimeHelper $dates)
     {
         $fields = $this->withoutNulls($request, ['channel_id', 'title', 'message']);
         $post = $request->updatePost($fields, $dates);
@@ -107,12 +106,11 @@ class PostsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Post                $post
+     * @param \App\Post $post
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, Post $post)
+    public function destroy(Post $post)
     {
         $post->delete();
 

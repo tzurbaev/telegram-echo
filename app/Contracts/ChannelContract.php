@@ -40,6 +40,13 @@ interface ChannelContract
     public function members();
 
     /**
+     * Возвращает список участников канала.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getMembers();
+
+    /**
      * Количество участников канала.
      *
      * @return int

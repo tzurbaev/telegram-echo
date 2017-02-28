@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Channel;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreChannel;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateChannel;
 use App\Transformers\ChannelTransformer;
+use App\Http\Requests\StoreChannelRequest;
+use App\Http\Requests\UpdateChannelRequest;
 use App\Contracts\Channels\ChannelsFactoryContract;
 
 class ChannelsController extends Controller
@@ -30,11 +30,11 @@ class ChannelsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\StoreChannel $request
+     * @param \App\Http\Requests\StoreChannelRequest $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(StoreChannel $request, ChannelsFactoryContract $channels)
+    public function store(StoreChannelRequest $request, ChannelsFactoryContract $channels)
     {
         $user = $request->user();
         $bot = $user->bots()->find($request->input('bot_id'));
@@ -52,12 +52,11 @@ class ChannelsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \Illuminate\Http\Request
      * @param \App\Channel $channel
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Request $request, Channel $channel)
+    public function show(Channel $channel)
     {
         return response()->json([
             'success' => 1,
@@ -68,12 +67,12 @@ class ChannelsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UpdateChannel $request
-     * @param \App\Channel                     $channel
+     * @param \App\Http\Requests\UpdateChannelRequest $request
+     * @param \App\Channel                            $channel
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateChannel $request, Channel $channel)
+    public function update(UpdateChannelRequest $request, Channel $channel)
     {
         $fields = $this->withoutNulls($request, ['name', 'chat_id', 'bot_id']);
         $channel->update($fields);
@@ -87,12 +86,11 @@ class ChannelsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \Illuminate\Http\Request
      * @param \App\Channel $channel
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Channel $channel)
+    public function destroy(Channel $channel)
     {
         $channel->delete();
 

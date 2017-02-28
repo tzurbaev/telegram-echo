@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddMemberToChannel extends FormRequest
+class UpdateBotRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,9 +13,7 @@ class AddMemberToChannel extends FormRequest
      */
     public function authorize()
     {
-        $channel = $this->route('channel');
-
-        return !is_null($channel) && $channel->isCreator($this->user());
+        return !is_null($this->user()->bots()->find($this->route('bot')));
     }
 
     /**
@@ -26,7 +24,7 @@ class AddMemberToChannel extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|integer',
+            'token' => 'string|max:255',
         ];
     }
 }

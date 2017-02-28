@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Contracts\Posts\PostsFactoryContract;
 use App\Exceptions\Api\BotWasNotFoundException;
 
-class StorePost extends FormRequest
+class StorePostRequest extends FormRequest
 {
     /**
      * @var \App\Contracts\ChannelContract

@@ -3,10 +3,11 @@
 namespace App\Http\Requests;
 
 use App\Channel;
+use App\Contracts\PostContract;
 use App\Helpers\DateTimeHelper;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePost extends FormRequest
+class UpdatePostRequest extends FormRequest
 {
     /**
      * @var \App\Contracts\ChannelContract
@@ -27,7 +28,7 @@ class UpdatePost extends FormRequest
     {
         $this->currentPost = $this->route('post');
 
-        if (is_null($this->currentPost)) {
+        if (!($this->currentPost instanceof PostContract)) {
             return false;
         }
 

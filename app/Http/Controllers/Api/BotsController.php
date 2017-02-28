@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Bot;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreBot;
-use App\Http\Requests\UpdateBot;
 use App\Http\Controllers\Controller;
 use App\Transformers\BotTransformer;
+use App\Http\Requests\StoreBotRequest;
+use App\Http\Requests\UpdateBotRequest;
 
 class BotsController extends Controller
 {
@@ -31,11 +31,11 @@ class BotsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\StoreBot $request
+     * @param \App\Http\Requests\StoreBotRequest $request
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBot $request)
+    public function store(StoreBotRequest $request)
     {
         $bot = $request->user()->bots()->create([
             'external_id' => 0,
@@ -53,12 +53,11 @@ class BotsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \Illuminate\Http\Request
      * @param \App\Bot $bot
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, Bot $bot)
+    public function show(Bot $bot)
     {
         return response()->json([
             'success' => 1,
@@ -69,12 +68,12 @@ class BotsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UpdateBot $request
-     * @param \App\Bot                     $bot
+     * @param \App\Http\Requests\UpdateBotRequest $request
+     * @param \App\Bot                            $bot
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBot $request, Bot $bot)
+    public function update(UpdateBotRequest $request, Bot $bot)
     {
         $fields = $this->withoutNulls($request, ['token']);
         $bot->update($fields);
@@ -88,12 +87,11 @@ class BotsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \Illuminate\Http\Request
      * @param \App\Bot $bot
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Bot $bot)
+    public function destroy(Bot $bot)
     {
         $bot->delete();
 

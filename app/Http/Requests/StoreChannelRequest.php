@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreBot extends FormRequest
+class StoreChannelRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,9 @@ class StoreBot extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $bot = $this->user()->bots()->find($this->input('bot_id'));
+
+        return !is_null($bot);
     }
 
     /**
@@ -24,7 +26,9 @@ class StoreBot extends FormRequest
     public function rules()
     {
         return [
-            'token' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'chat_id' => 'required|string|max:255,unique:channels',
+            'bot_id' => 'required|integer|exists:bots,id',
         ];
     }
 }

@@ -4,11 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\UpdateSettings;
+use App\Http\Requests\UpdateSettingsRequest;
 
 class SettingsController extends Controller
 {
-    public function update(UpdateSettings $request)
+    /**
+     * @param \App\Http\Requests\UpdateSettingsRequest $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(UpdateSettingsRequest $request)
     {
         $common = $this->withoutNulls($request, ['name', 'email'], false);
         $user = $request->user();
