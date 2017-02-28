@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Bot;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreBot;
 use App\Http\Requests\UpdateBot;
 use App\Http\Controllers\Controller;
 use App\Transformers\BotTransformer;
-use App\Exceptions\Http\EmptyRequestException;
-use App\Exceptions\Api\BotWasNotFoundException;
 
 class BotsController extends Controller
 {
@@ -55,18 +54,12 @@ class BotsController extends Controller
      * Display the specified resource.
      *
      * @param \Illuminate\Http\Request
-     * @param int $id
+     * @param \App\Bot $bot
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show(Request $request, Bot $bot)
     {
-        $bot = $request->user()->bots()->find($id);
-
-        if (is_null($bot)) {
-            throw new BotWasNotFoundException();
-        }
-
         return response()->json([
             'success' => 1,
             'data' => $bot,
@@ -77,24 +70,13 @@ class BotsController extends Controller
      * Update the specified resource in storage.
      *
      * @param \App\Http\Requests\UpdateBot $request
-     * @param int                          $id
+     * @param \App\Bot                     $bot
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBot $request, $id)
+    public function update(UpdateBot $request, Bot $bot)
     {
-        $bot = $request->user()->bots()->find($id);
-
-        if (is_null($bot)) {
-            throw new BotWasNotFoundException();
-        }
-
         $fields = $this->withoutNulls($request, ['token']);
-
-        if (!count($fields)) {
-            throw new EmptyRequestException();
-        }
-
         $bot->update($fields);
 
         return response()->json([
@@ -107,18 +89,12 @@ class BotsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \Illuminate\Http\Request
-     * @param int $id
+     * @param \App\Bot $bot
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, Bot $bot)
     {
-        $bot = $request->user()->bots()->find($id);
-
-        if (is_null($bot)) {
-            throw new BotWasNotFoundException();
-        }
-
         $bot->delete();
 
         return response()->json([

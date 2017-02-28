@@ -16,13 +16,13 @@ class RemoveMemberFromChannel extends FormRequest
         $user = $this->user();
         $removingId = intval($this->input('user_id'));
 
-        $channel = $user->channels()->find($this->route('channel'));
+        $channel = $this->route('channel');
 
         // Пользователей может удалять только создатель канала.
         // Кроме того, пользователь может сам уйти из канала.
         // В этом случае этот запрос так же будет корректен.
 
-        return !is_null($channel) && ($channel->isCreator($this->user()) || $user->id === $removingId);
+        return !is_null($channel) && ($channel->isCreator($user) || $user->id === $removingId);
     }
 
     /**

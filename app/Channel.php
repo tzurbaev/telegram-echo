@@ -66,6 +66,16 @@ class Channel extends Model implements ChannelContract
     }
 
     /**
+     * Возвращает привязанный бот.
+     *
+     * @return \App\Contracts\BotContract|null
+     */
+    public function getBot()
+    {
+        return $this->hasBot() ? $this->bot : null;
+    }
+
+    /**
      * Идентификатор чата.
      *
      * @return int|string

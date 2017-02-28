@@ -19,6 +19,13 @@ interface ChannelContract
     public function hasBot(): bool;
 
     /**
+     * Возвращает привязанный бот.
+     *
+     * @return \App\Contracts\BotContract|null
+     */
+    public function getBot();
+
+    /**
      * Идентификатор чата.
      *
      * @return int|string

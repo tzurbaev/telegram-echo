@@ -3,10 +3,21 @@
 namespace App\Http\Requests;
 
 use App\Channel;
+use App\Helpers\DateTimeHelper;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePost extends FormRequest
 {
+    /**
+     * @var \App\Contracts\ChannelContract
+     */
+    protected $channel;
+
+    /**
+     * @var \App\Contracts\PostContract
+     */
+    protected $currentPost;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -14,10 +25,9 @@ class UpdatePost extends FormRequest
      */
     public function authorize()
     {
-        $user = $this->user();
-        $post = $user->posts()->find($this->route('post'));
+        $this->currentPost = $this->route('post');
 
-        if (is_null($post)) {
+        if (is_null($this->currentPost)) {
             return false;
         }
 
@@ -29,9 +39,9 @@ class UpdatePost extends FormRequest
         // нам нужно убедиться, что этот пользователь
         // имеет доступ к публикациям нового канала.
 
-        $channel = Channel::find($this->input('channel_id'));
+        $this->channel = Channel::find($this->input('channel_id'));
 
-        return !is_null($channel) && $channel->hasMember($user);
+        return !is_null($this->channel) && $this->channel->hasMember($this->user());
     }
 
     /**
@@ -50,5 +60,21 @@ class UpdatePost extends FormRequest
             'attachments.*.params' => 'array',
             'remove_attachments' => 'boolean',
         ];
+    }
+
+    public function updatePost(array $fields, DateTimeHelper $dates)
+    {
+        $autosave = false;
+
+        $fields['scheduled_at'] = $dates->extractFromRequest($this, 'scheduled_at', 'Y-m-d H:i:s', $this->user()->timezone);
+
+        $attachments = $this->input('attachments');
+        $remove = $this->has('remove_attachments');
+
+        $this->currentPost
+            ->updateOrRemoveAttachments($attachments, $remove, $autosave)
+            ->update($fields);
+
+        return $this->currentPost;
     }
 }

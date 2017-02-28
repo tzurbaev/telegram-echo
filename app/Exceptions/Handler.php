@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use App\Exceptions\Http\EmptyRequestException;
+use App\Exceptions\Api\BotWasNotFoundException;
 use App\Exceptions\Api\UserWasNotFoundException;
 use App\Exceptions\Api\BotWasNotCreatedException;
 use App\Exceptions\Api\ChannelWasNotFoundException;
@@ -57,6 +58,11 @@ class Handler extends ExceptionHandler
             return response()->json([
                 'error' => 'User was not found.',
                 'code' => 'user_not_found',
+            ], 404);
+        } elseif ($exception instanceof BotWasNotFoundException) {
+            return response()->json([
+                'error' => 'Bot was not found.',
+                'code' => 'bot_not_found',
             ], 404);
         } elseif ($exception instanceof EmptyRequestException) {
             return response()->json([

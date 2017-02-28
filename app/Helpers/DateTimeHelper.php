@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use InvalidArgumentException;
 
 class DateTimeHelper
@@ -34,5 +35,14 @@ class DateTimeHelper
         setlocale(LC_TIME, $systemLocale);
 
         return $date->formatLocalized($format);
+    }
+
+    public function extractFromRequest(Request $request, string $field, string $format, string $timezone = null)
+    {
+        if (!$request->has($field)) {
+            return;
+        }
+
+        return Carbon::createFromFormat($format, $request->input($field), $timezone)->setTimezone('UTC');
     }
 }

@@ -16,7 +16,7 @@ class UpdateChannel extends FormRequest
     {
         $user = $this->user();
 
-        $channel = $user->channels()->find($this->route('channel'));
+        $channel = $this->route('channel');
 
         if (is_null($channel)) {
             return false;

@@ -13,7 +13,7 @@ class AddMemberToChannel extends FormRequest
      */
     public function authorize()
     {
-        $channel = $this->user()->channels()->find($this->route('channel'));
+        $channel = $this->route('channel');
 
         return !is_null($channel) && $channel->isCreator($this->user());
     }
@@ -25,6 +25,8 @@ class AddMemberToChannel extends FormRequest
      */
     public function rules()
     {
-        return [];
+        return [
+            'user_id' => 'required|integer',
+        ];
     }
 }

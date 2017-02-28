@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Channel;
-use Carbon\Carbon;
+use App\Post;
 use Illuminate\Http\Request;
+use App\Helpers\DateTimeHelper;
 use App\Http\Requests\StorePost;
 use App\Http\Requests\UpdatePost;
 use App\Jobs\PublishScheduledPost;
 use App\Http\Controllers\Controller;
 use App\Transformers\PostTransformer;
-use App\Exceptions\Api\BotWasNotFoundException;
-use App\Exceptions\Api\PostWasNotFoundException;
+use App\Contracts\Posts\PostsFactoryContract;
 
 class PostsController extends Controller
 {
@@ -35,32 +34,16 @@ class PostsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\StorePost $request
+     * @param \App\Http\Requests\StorePost              $request
+     * @param \App\Contracts\Posts\PostsFactoryContract $posts
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(StorePost $request)
+    public function store(StorePost $request, PostsFactoryContract $posts, DateTimeHelper $dates)
     {
-        $channel = Channel::find($request->input('channel_id'));
+        $post = $request->createPost($posts, $dates);
 
-        if (!$channel->hasBot()) {
-            throw new BotWasNotFoundException();
-        }
-
-        $scheduledAt = $this->extractScheduledPostDate($request);
-
-        $post = $request->user()->posts()->create([
-            'title' => $request->input('title'),
-            'message' => $request->input('message'),
-            'scheduled_at' => $scheduledAt,
-            'published_at' => null,
-        ]);
-
-        if ($request->has('attachments')) {
-            $post->setAttachments($request->input('attachments'));
-        }
-
-        $post->shouldBePublishedWith($channel->bot, $channel);
+        $request->user()->posts()->save($post);
 
         $jobDispatched = false;
 
@@ -81,18 +64,12 @@ class PostsController extends Controller
      * Display the specified resource.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int                      $id
+     * @param \App\Post                $post
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Request $request, $id)
+    public function show(Request $request, Post $post)
     {
-        $post = $request->user()->posts()->find($id);
-
-        if (is_null($post)) {
-            throw new PostWasNotFoundException();
-        }
-
         return response()->json([
             'success' => 1,
             'data' => fractal($post, new PostTransformer())->toArray(),
@@ -102,29 +79,15 @@ class PostsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int                      $id
+     * @param \Illuminate\Http\Request    $request
+     * @param \App\Helpers\DateTimeHelper $dates
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdatePost $request, $id)
+    public function update(UpdatePost $request, DateTimeHelper $dates)
     {
-        $post = $request->user()->posts()->find($id);
-
-        $scheduledAt = $this->extractScheduledPostDate($request);
         $fields = $this->withoutNulls($request, ['channel_id', 'title', 'message']);
-
-        $post->update(array_merge($fields, [
-            'scheduled_at' => $scheduledAt,
-        ]));
-
-        $removeAttachments = $request->has('remove_attachments');
-
-        if ($removeAttachments) {
-            $post->removeAttachments();
-        } elseif ($request->has('attachments')) {
-            $post->setAttachments($request->input('attachments'));
-        }
+        $post = $request->updatePost($fields, $dates);
 
         $publicationDispatched = false;
 
@@ -145,42 +108,16 @@ class PostsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int                      $id
+     * @param \App\Post                $post
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, Post $post)
     {
-        $post = $request->user()->posts()->find($id);
-
-        if (is_null($post)) {
-            throw new PostWasNotFoundException();
-        }
-
         $post->delete();
 
         return response()->json([
             'success' => 1,
         ]);
-    }
-
-    /**
-     * Возвращает дату публикации отложенной записи (если передана).
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Carbon\Carbon|null
-     */
-    protected function extractScheduledPostDate(Request $request)
-    {
-        $scheduledAt = null;
-        $timezone = $request->user()->timezone;
-
-        if ($request->has('scheduled_at')) {
-            $scheduledAt = Carbon::createFromFormat('Y-m-d H:i', $request->input('scheduled_at'), $timezone)
-                ->setTimezone('UTC');
-        }
-
-        return $scheduledAt;
     }
 }

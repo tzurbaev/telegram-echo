@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Channel;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreChannel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateChannel;
 use App\Transformers\ChannelTransformer;
-use App\Exceptions\Http\EmptyRequestException;
 use App\Contracts\Channels\ChannelsFactoryContract;
-use App\Exceptions\Api\ChannelWasNotFoundException;
 
 class ChannelsController extends Controller
 {
@@ -53,18 +52,13 @@ class ChannelsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param \Illuminate\Http\Request
+     * @param \App\Channel $channel
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Request $request, $id)
+    public function show(Request $request, Channel $channel)
     {
-        $channel = $request->user()->channels()->find($id);
-
-        if (is_null($channel)) {
-            throw new ChannelWasNotFoundException();
-        }
-
         return response()->json([
             'success' => 1,
             'data' => fractal($channel, new ChannelTransformer())->toArray(),
@@ -75,24 +69,13 @@ class ChannelsController extends Controller
      * Update the specified resource in storage.
      *
      * @param \App\Http\Requests\UpdateChannel $request
-     * @param int                              $id
+     * @param \App\Channel                     $channel
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateChannel $request, $id)
+    public function update(UpdateChannel $request, Channel $channel)
     {
-        $channel = $request->user()->channels()->find($id);
-
-        if (is_null($channel)) {
-            throw new ChannelWasNotFoundException();
-        }
-
         $fields = $this->withoutNulls($request, ['name', 'chat_id', 'bot_id']);
-
-        if (!count($fields)) {
-            throw new EmptyRequestException();
-        }
-
         $channel->update($fields);
 
         return response()->json([
@@ -105,18 +88,12 @@ class ChannelsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \Illuminate\Http\Request
-     * @param int $id
+     * @param \App\Channel $channel
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, Channel $channel)
     {
-        $channel = $request->user()->channels()->find($id);
-
-        if (is_null($channel)) {
-            throw new ChannelWasNotFoundException();
-        }
-
         $channel->delete();
 
         return [

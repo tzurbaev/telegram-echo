@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use Telegram\Bot\Api;
 use App\Posts\Publisher;
+use App\Posts\PostsFactory;
 use App\Channels\ChannelsFactory;
 use Illuminate\Support\ServiceProvider;
 use App\Contracts\Posts\PublisherContract;
+use App\Contracts\Posts\PostsFactoryContract;
 use App\Contracts\Channels\ChannelsFactoryContract;
 use App\Notifications\Service\TelegramNotificationsSender;
 
@@ -43,6 +45,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $map = [
             ChannelsFactoryContract::class => ChannelsFactory::class,
+            PostsFactoryContract::class => PostsFactory::class,
             PublisherContract::class => Publisher::class,
         ];
 

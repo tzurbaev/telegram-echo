@@ -113,10 +113,11 @@ class Post extends Model implements PostContract
      * Прикрепляет медиа к записи.
      *
      * @param array $attachments
+     * @param bool  $autosave    = true
      *
      * @return \App\Contracts\PostContract
      */
-    public function setAttachments(array $attachments)
+    public function setAttachments(array $attachments, bool $autosave = true)
     {
         $validAttachments = collect($attachments)->map(function ($attachment) {
             if (empty($attachment['type']) || empty($attachment['params'])) {
@@ -129,21 +130,51 @@ class Post extends Model implements PostContract
             ];
         });
 
-        $this->update([
-            'attachments' => $validAttachments->reject(null)->toArray(),
-        ]);
+        $this->attachments = $validAttachments->reject(null)->toArray();
+
+        if ($autosave === true) {
+            $this->save();
+        }
 
         return $this;
     }
 
     /**
-     * Удаляет все прикрепления от записи.
+     * Обновляет прикреления или удаляет их.
+     *
+     * @param mixed $attachments
+     * @param bool  $remove      = false
+     * @param bool  $autosave    = true
      *
      * @return \App\Contracts\PostContract
      */
-    public function removeAttachments()
+    public function updateOrRemoveAttachments($attachments, bool $remove = false, bool $autosave = true)
     {
-        $this->update(['attachments' => null]);
+        if ($remove === true) {
+            return $this->removeAttachments($autosave);
+        }
+
+        if (is_null($attachments)) {
+            return $this;
+        }
+
+        return $this->setAttachments($attachments, $autosave);
+    }
+
+    /**
+     * Удаляет все прикрепления от записи.
+     *
+     * @param bool $autosave = true
+     *
+     * @return \App\Contracts\PostContract
+     */
+    public function removeAttachments(bool $autosave = true)
+    {
+        $this->attachments = null;
+
+        if ($autosave === true) {
+            $this->save();
+        }
 
         return $this;
     }
@@ -153,15 +184,18 @@ class Post extends Model implements PostContract
      *
      * @param \App\Contracts\BotContract     $bot
      * @param \App\Contracts\ChannelContract $channel
+     * @param bool                           $autosave = true
      *
      * @return \App\Contracts\PostContract
      */
-    public function shouldBePublishedWith(BotContract $bot, ChannelContract $channel)
+    public function shouldBePublishedWith(BotContract $bot, ChannelContract $channel, bool $autosave = true)
     {
-        $this->update([
-            'bot_id' => $bot->id,
-            'channel_id' => $channel->id,
-        ]);
+        $this->bot()->associate($bot);
+        $this->channel()->associate($channel);
+
+        if ($autosave === true) {
+            $this->save();
+        }
 
         // Перезагружаем связи (если необходимо), чтобы потребители,
         // которые используют методы getBot/getChannel, получили

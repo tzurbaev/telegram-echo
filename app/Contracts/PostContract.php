@@ -38,27 +38,42 @@ interface PostContract
      * Прикрепляет медиа к записи.
      *
      * @param array $attachments
+     * @param bool  $autosave    = true
      *
      * @return \App\Contracts\PostContract
      */
-    public function setAttachments(array $attachments);
+    public function setAttachments(array $attachments, bool $autosave = true);
+
+    /**
+     * Обновляет прикреления или удаляет их.
+     *
+     * @param mixed $attachments
+     * @param bool  $remove      = false
+     * @param bool  $autosave    = true
+     *
+     * @return \App\Contracts\PostContract
+     */
+    public function updateOrRemoveAttachments($attachments, bool $remove = false, bool $autosave = true);
 
     /**
      * Удаляет все прикрепления от записи.
      *
+     * @param bool $autosave = true
+     *
      * @return \App\Contracts\PostContract
      */
-    public function removeAttachments();
+    public function removeAttachments(bool $autosave = true);
 
     /**
      * Устанавливает бота и канал для этой записи.
      *
      * @param \App\Contracts\BotContract     $bot
      * @param \App\Contracts\ChannelContract $channel
+     * @param bool                           $autosave = true
      *
      * @return \App\Contracts\PostContract
      */
-    public function shouldBePublishedWith(BotContract $bot, ChannelContract $channel);
+    public function shouldBePublishedWith(BotContract $bot, ChannelContract $channel, bool $autosave = true);
 
     /**
      * Проверяет, является ли запись отложенной.
@@ -76,6 +91,8 @@ interface PostContract
 
     /**
      * Проверяет, была ли запись уже опубликована.
+     *
+     * @return bool
      */
     public function wasPublished(): bool;
 

@@ -10,10 +10,10 @@ class SettingsController extends Controller
 {
     public function update(UpdateSettings $request)
     {
-        $common = $this->withoutNulls($request, ['name', 'email']);
+        $common = $this->withoutNulls($request, ['name', 'email'], false);
         $user = $request->user();
 
-        if (count($common)) {
+        if (count($common) > 0) {
             $user->fill($common);
         }
 
