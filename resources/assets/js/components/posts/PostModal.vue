@@ -23,7 +23,7 @@
           </div>
           <div class="field" :class="{'error': hasMessageError}">
             <label>Текст</label>
-            <textarea cols="30" rows="10" v-model="form.message"></textarea>
+            <textarea cols="30" rows="10" :id="modalFormId" v-model="form.message"></textarea>
           </div>
           <div v-if="hasMessageError" class="ui error message">
             <p>Необходимо указать текст публикации.</p>
@@ -46,6 +46,8 @@
 </template>
 
 <script>
+import SimpleMDE from 'simplemde'
+
 export default {
   mounted() {
     this.initModal()
@@ -91,6 +93,20 @@ export default {
         closable: false,
         keyboardShortcuts: false,
       })
+
+      this.editor = new SimpleMDE({
+        element: document.getElementById(this.modalFormId),
+        autosave: false,
+        blockStyles: {
+          italic: '_',
+        },
+        forceSync: true,
+        indentWithTabs: false,
+        shortcuts: false,
+        spellChecker: false,
+        tabSize: 4,
+        toolbar: ['bold', 'italic', 'code', 'link'],
+      })
     },
 
     showModal(post) {
@@ -123,6 +139,8 @@ export default {
           attachments: post.attachments,
         }
       }
+
+      this.editor.value(this.form.message)
     },
 
     randomStr() {
@@ -150,6 +168,8 @@ export default {
 
         return false
       }
+
+      this.form.message = this.editor.value().replace(/\*\*/g, '*')
 
       if (!this.form.message.trim()) {
         this.hasMessageError = true
@@ -208,19 +228,20 @@ export default {
   data() {
     return {
       modalId: `post-modal-component-${this.randomStr()}`,
+      modalFormId: `post-modal-component-form-${this.randomStr()}`,
       type: 'create',
       post: {},
       form: {
         channel_id: 0,
         title: '',
         message: '',
-        attachments: [],
       },
       formIsBusy: false,
       hasChannelError: false,
       hasTitleError: false,
       hasMessageError: false,
       hasAttachmentsError: false,
+      editor: null,
     }
   }
 }
