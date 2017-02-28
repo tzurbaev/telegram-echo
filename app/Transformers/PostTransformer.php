@@ -21,6 +21,16 @@ class PostTransformer extends TransformerAbstract
             'scheduled' => $post->isScheduled(),
             'scheduled_at' => !is_null($post->scheduled_at) ? DateTimeHelper::formatLocalized('date.time', $post->scheduled_at) : null,
             'published_at' => $post->wasPublished() ? DateTimeHelper::formatLocalized('date.time', $post->published_at) : null,
+            'urls' => [
+                'update' => [
+                    'url' => route('api.posts.update', ['post' => $post->id]),
+                    'method' => 'put',
+                ],
+                'destroy' => [
+                    'url' => route('api.posts.destroy', ['post' => $post->id]),
+                    'method' => 'delete',
+                ],
+            ],
             'created_at' => DateTimeHelper::formatLocalized('date.time', $post->created_at),
             'updated_at' => DateTimeHelper::formatLocalized('date.time', $post->updated_at),
         ];

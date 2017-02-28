@@ -58,6 +58,16 @@ const store = new Vuex.Store({
             state.posts.push(post)
         },
 
+        updatePost(state, payload) {
+            const postIndex = state.posts.findIndex(post => post.id === payload.id)
+
+            if (postIndex < 0) {
+                return
+            }
+
+            state.posts[postIndex] = payload.data
+        },
+
         removePost(state, id) {
             state.posts = state.posts.filter(post => post.id !== id)
         },

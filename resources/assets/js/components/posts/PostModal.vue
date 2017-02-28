@@ -197,9 +197,19 @@ export default {
         .then(response => {
           this.closeModal()
           this.formIsBusy = false
-          this.$store.commit('addPost', response.data.data)
 
-          alert('Публикация была добавлена')
+          if (this.type === 'create') {
+            this.$store.commit('addPost', response.data.data)
+
+            alert('Публикация была добавлена')
+          } else {
+            this.$store.commit('updatePost', {
+              id: this.post.id,
+              data: response.data.data,
+            })
+
+            alert('Публикация была обновлена')
+          }
         }, error => {
           this.formIsBusy = false
 
