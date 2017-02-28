@@ -2,6 +2,7 @@
 
 namespace App\Messages;
 
+use Closure;
 use App\Contracts\BotContract;
 use App\Contracts\ChannelContract;
 use App\Contracts\Messages\FluentMessageContract;
@@ -64,11 +65,11 @@ class FluentMessage implements FluentMessageContract
     /**
      * Текст сообщения.
      *
-     * @return string|null
+     * @return string
      */
     public function getText()
     {
-        return $this->text;
+        return $this->text ?? '';
     }
 
     /**
@@ -186,6 +187,22 @@ class FluentMessage implements FluentMessageContract
     public function withLocation(float $lat, float $lon)
     {
         return $this->withAttachment('location', [$lat, $lon]);
+    }
+
+    /**
+     * Обновляет текст с помощью callback-функции.
+     *
+     * @param \Closure $callback
+     *
+     * @return \App\Contracts\Messages\FluentMessageContract
+     */
+    public function processText(Closure $callback)
+    {
+        $text = $callback($this->getText());
+
+        $this->text = $text;
+
+        return $this;
     }
 
     /**

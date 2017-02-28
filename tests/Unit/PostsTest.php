@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use Telegram\Bot\Api;
 use App\Posts\Publisher;
+use App\Posts\MessageProcessor;
 use App\Jobs\PublishScheduledPost;
 use Illuminate\Support\Facades\Bus;
 use App\Transports\TelegramTransport;
@@ -60,8 +61,9 @@ class PostsTest extends TestCase
                 'parse_mode' => 'markdown',
             ]);
 
+        $messageProcessor = new MessageProcessor();
         $transport = new TelegramTransport($telegram);
-        $publisher = new Publisher($transport);
+        $publisher = new Publisher($messageProcessor, $transport);
 
         $post = factory(Post::class)->create(['message' => 'Hello world']);
         $post->shouldBePublishedWith($bot, $channel);

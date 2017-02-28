@@ -2,6 +2,7 @@
 
 namespace App\Contracts\Messages;
 
+use Closure;
 use App\Contracts\ChannelContract;
 
 interface FluentMessageContract
@@ -23,7 +24,7 @@ interface FluentMessageContract
     /**
      * Текст сообщения.
      *
-     * @return string|null
+     * @return string
      */
     public function getText();
 
@@ -109,4 +110,13 @@ interface FluentMessageContract
      * @return \App\Contracts\Messages\FluentMessageContract
      */
     public function withLocation(float $lat, float $lon);
+
+    /**
+     * Обновляет текст с помощью callback-функции.
+     *
+     * @param \Closure $callback
+     *
+     * @return \App\Contracts\Messages\FluentMessageContract
+     */
+    public function processText(Closure $callback);
 }

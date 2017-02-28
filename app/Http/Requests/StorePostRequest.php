@@ -53,7 +53,11 @@ class StorePostRequest extends FormRequest
         $title = $this->input('title');
         $message = $this->input('message');
         $scheduledAt = $dates->extractFromRequest($this, 'scheduled_at', 'Y-m-d H:i', $this->user()->timezone);
-        $attachments = $this->input('attachments', []);
+        $attachments = $this->input('attachments');
+
+        if (is_null($attachments)) {
+            $attachments = [];
+        }
 
         return $posts->make($this->channel, $title, $message, $scheduledAt, $attachments);
     }

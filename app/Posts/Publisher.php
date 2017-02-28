@@ -8,19 +8,27 @@ use Illuminate\Support\Str;
 use App\Contracts\PostContract;
 use App\Contracts\Posts\PublisherContract;
 use App\Contracts\Transports\TransportContract;
+use App\Contracts\Posts\MessageProcessorContract;
 
 class Publisher implements PublisherContract
 {
+    /**
+     * @var string \App\Contracts\Posts\MessageProcessorContract
+     */
+    protected $messageProcessor;
+
     /**
      * @var \App\Contracts\Transports\TransportContract
      */
     protected $transport;
 
     /**
+     * @param string \App\Contracts\Posts\MessageProcessorContract
      * @param \App\Contracts\Transports\TransportContract $transport = null
      */
-    public function __construct(TransportContract $transport = null)
+    public function __construct(MessageProcessorContract $messageProcessor, TransportContract $transport = null)
     {
+        $this->messageProcessor = $messageProcessor;
         $this->transport = $transport;
     }
 
@@ -53,7 +61,10 @@ class Publisher implements PublisherContract
             throw new RuntimeException('Transport is required.');
         }
 
-        $message = $this->messageFromPost($post);
+        $message = $this->messageFromPost($post)
+            ->processText(function (string $text) {
+                return $this->messageProcessor->processBeforePublishing($text);
+            });
 
         try {
             $this->transport->send($message);

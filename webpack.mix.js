@@ -20,6 +20,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
    .combine([
         'resources/assets/css/semantic.css',
         'node_modules/font-awesome/css/font-awesome.css',
+        'node_modules/simplemde/dist/simplemde.min.css',
     ], 'public/css/vendor.css')
    .combine([
         'resources/assets/scripts/jquery-3.1.1.min.js',
