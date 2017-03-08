@@ -2,21 +2,17 @@
 
 namespace App\Validator;
 
-use Illuminate\Validation\Validator;
-
 class CustomRules
 {
     /**
      * Проводит валидацию правила "bot_token:provider".
      *
-     * @param string                           $attribute
-     * @param mixed                            $value
-     * @param array                            $parameters
-     * @param \Illuminate\Validation\Validator $validator
+     * @param mixed $value
+     * @param array $parameters
      *
      * @return bool
      */
-    public function validateBotTokenRule(string $attribute, $value, array $parameters, Validator $validator): bool
+    public function validateBotTokenRule($value, array $parameters): bool
     {
         if (in_array('telegram', $parameters)) {
             return $this->validateTelegramToken($value);
@@ -28,14 +24,12 @@ class CustomRules
     /**
      * Проводит валидацию правила "chat_identifier:provider".
      *
-     * @param string                           $attribute
-     * @param mixed                            $value
-     * @param array                            $parameters
-     * @param \Illuminate\Validation\Validator $validator
+     * @param mixed $value
+     * @param array $parameters
      *
      * @return bool
      */
-    public function validateChatIdentifierRule(string $attribute, $value, array $parameters, Validator $validator): bool
+    public function validateChatIdentifierRule($value, array $parameters): bool
     {
         if (in_array('telegram', $parameters)) {
             return $this->validateTelegramChatIdentifier($value);

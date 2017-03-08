@@ -22,7 +22,7 @@ class ValidatorServiceProvider extends ServiceProvider
             Validator::extend($rule, function ($attribute, $value, $parameters, $validator) use ($rule, $customRules) {
                 $methodName = 'validate'.Str::studly($rule).'Rule';
 
-                return $customRules->{$methodName}($attribute, $value, $parameters, $validator);
+                return $customRules->{$methodName}($value, $parameters);
             });
         });
     }
