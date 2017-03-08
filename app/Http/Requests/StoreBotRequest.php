@@ -24,7 +24,7 @@ class StoreBotRequest extends FormRequest
     public function rules()
     {
         return [
-            'token' => 'required|string|max:255',
+            'token' => 'required|bot_token:telegram',
         ];
     }
 }

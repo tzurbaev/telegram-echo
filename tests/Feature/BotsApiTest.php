@@ -35,7 +35,7 @@ class BotsApiTest extends TestCase
         $payload = [
             'name' => 'My Bot',
             'username' => 'my_bot',
-            'token' => 'token',
+            'token' => '123:token',
         ];
 
         $this->json('POST', route('api.bots.store'), $payload)
@@ -112,7 +112,7 @@ class BotsApiTest extends TestCase
         $this->actingAs($user);
 
         $payload = [
-            'token' => 'new-token',
+            'token' => '123:newtoken',
         ];
 
         $this->json('PUT', route('api.bots.update', ['bot' => $bot->id]), $payload)
@@ -121,7 +121,7 @@ class BotsApiTest extends TestCase
                 'id' => $bot->id,
             ]);
 
-        $this->assertSame('new-token', $bot->fresh()->token);
+        $this->assertSame($payload['token'], $bot->fresh()->token);
     }
 
     public function testBotCanBeDeletedViaApi()

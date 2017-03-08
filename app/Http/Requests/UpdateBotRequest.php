@@ -24,7 +24,7 @@ class UpdateBotRequest extends FormRequest
     public function rules()
     {
         return [
-            'token' => 'string|max:255',
+            'token' => 'bot_token:telegram',
         ];
     }
 }

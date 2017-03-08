@@ -27,7 +27,7 @@ class StoreChannelRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'chat_id' => 'required|string|max:255,unique:channels',
+            'chat_id' => 'required|chat_identifier:telegram|unique:channels',
             'bot_id' => 'required|integer|exists:bots,id',
         ];
     }

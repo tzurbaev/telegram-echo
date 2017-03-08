@@ -30,6 +30,8 @@ return [
         'array'   => 'The :attribute must have between :min and :max items.',
     ],
     'boolean'              => 'The :attribute field must be true or false.',
+    'bot_token'            => 'The :attribute field must be a valid Bot token.',
+    'chat_identifier'      => 'The :attribute field must be a valid Chat Identifier.',
     'confirmed'            => 'The :attribute confirmation does not match.',
     'date'                 => 'The :attribute is not a valid date.',
     'date_format'          => 'The :attribute does not match the format :format.',
