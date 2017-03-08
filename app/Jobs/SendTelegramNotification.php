@@ -36,7 +36,6 @@ class SendTelegramNotification implements ShouldQueue
 
     /**
      * Execute the job.
-     *
      */
     public function handle(TelegramNotificationsSender $sender)
     {

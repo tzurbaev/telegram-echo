@@ -10,7 +10,6 @@ class ComposerServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
-     *
      */
     public function boot()
     {
@@ -19,7 +18,6 @@ class ComposerServiceProvider extends ServiceProvider
 
     /**
      * Register the application services.
-     *
      */
     public function register()
     {

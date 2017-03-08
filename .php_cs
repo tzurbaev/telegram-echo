@@ -12,5 +12,6 @@ return PhpCsFixer\Config::create()
         'phpdoc_separation' => true,
         'array_syntax' => ['syntax' => 'short'],
         'no_unused_imports' => true,
+        'phpdoc_trim' => true,
     ])
     ->setFinder($finder);
