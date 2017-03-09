@@ -47,6 +47,7 @@ class PublishScheduledPost implements ShouldQueue
 
         try {
             $publisher->withTransport($transport)->publish($this->post);
+            $wasPublished = true;
         } catch (RuntimeException $e) {
             $wasPublished = false;
         }
