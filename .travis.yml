@@ -5,8 +5,13 @@ php:
 sudo: false
 before_install:
   - cp .env.travis .env
-  - composer self-update
   - composer install --no-interaction --prefer-dist --no-suggest
   - php artisan key:generate
 script:
   - vendor/bin/phpunit
+notifications:
+  webhooks:
+    urls:
+      secure: C+s0ZU9A/2pHiQwDn6r9iBMekmS5Cm1gdK+FV8DJ2MAybs1fGOsrHPP5mmY1DMvsSuMCPlGvYAAbEmAFkeBpe2MZrQFPAOLkdxIu2N2cJNb2Og2EN/gOrfr2kdDr/MoIyPEcFQ2ahJPreETietG9vP8thUs+Wxv5KrqEb5hNFBU7PG/4ybvMP9AxkUtKeugxSyrsw52Qbiow2E5cC5wiaYEy/IyigwHaZAfc3+recb/bBxldoX0soxHHepyZNfbVQ26L5GTw3NuCeTe1uhtXAOZju81PQY+S5jDt63DnT9LNH50HhAXPcRuEHNRs08Pa6oX5xVv7oZEA2JKvfQSEZCC2fnuzhrY6LnR2QD2qW4GuyX16keepGqU58dB/7PE1uiotaz+5OkYUI9dHhjZWK8pbMvNmJqOCrOHayWP5SWh6+7Yu5SgzSPUy6TfsJh7C4XX3K9oLpHJF0QrD5lBXdZ6/zPolXOO3Vg2TATKCRp7AXB50CJhH3jUaCQPy0dcVk/Ybhyxq+1qiPCpwf7cKLtbvkr76vC0KgDwqFcRVkn8v/jKPIqWMPFD/3OxphSv174XJpvejk5nJWE1ZJtvIW4UrnBwOosvdvTf8JGzEslhDwug8YQ3frzK4eW8UfwHQU4MJk0wF98Dng+I79Qf0Pgmr4eYCNyp8IYmBSliNaXs=
+    on_success: always
+    on_failure: never
