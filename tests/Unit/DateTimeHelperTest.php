@@ -8,6 +8,13 @@ use App\Helpers\DateTimeHelper;
 
 class DateTimeHelperTest extends TestCase
 {
+    protected function setUp()
+    {
+        parent::setUp();
+
+        DateTimeHelper::resetDefaultTimezone();
+    }
+
     /**
      * @dataProvider dateTimeHelperDataProvider
      */

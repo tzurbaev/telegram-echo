@@ -28,12 +28,14 @@ class PublishScheduledPosts extends Command
      */
     public function handle()
     {
-        $from = Carbon::now()->subMinutes(2);
-        $till = Carbon::now()->addMinutes(2);
+        $from = Carbon::now()->second(0);
+        $till = Carbon::now()->second(59);
 
         $posts = Post::shouldBePublishedBetween($from, $till)->get();
 
         if (!count($posts)) {
+            $this->info('No posts were found (from: '.$from.', till: '.$till.')');
+
             return;
         }
 

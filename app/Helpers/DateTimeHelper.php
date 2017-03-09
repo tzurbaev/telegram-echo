@@ -9,6 +9,31 @@ use InvalidArgumentException;
 class DateTimeHelper
 {
     /**
+     * Часовой пояс, используемый по умолчанию.
+     *
+     * @var string
+     */
+    protected static $defaultTimezone;
+
+    /**
+     * Задает часовой пояс по умолчанию.
+     *
+     * @param string $timezone
+     */
+    public static function setDefaultTimezone(string $timezone)
+    {
+        static::$defaultTimezone = $timezone;
+    }
+
+    /**
+     * Обнуляет часовой пояс по умолчанию.
+     */
+    public static function resetDefaultTimezone()
+    {
+        static::$defaultTimezone = null;
+    }
+
+    /**
      * Форматирует дату в соответствии с заданным типом и локалью.
      *
      * Если локаль не задана, будет использовано значение из конфигурации приложения.
@@ -33,6 +58,10 @@ class DateTimeHelper
         }
 
         setlocale(LC_TIME, $systemLocale);
+
+        if (!is_null(static::$defaultTimezone) && $date->getTimezone() !== static::$defaultTimezone) {
+            $date->setTimezone(static::$defaultTimezone);
+        }
 
         return $date->formatLocalized($format);
     }

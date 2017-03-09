@@ -231,7 +231,7 @@ class Post extends Model implements PostContract
             return true;
         }
 
-        return $this->scheduled_at > Carbon::now();
+        return $this->scheduled_at <= Carbon::now();
     }
 
     /**

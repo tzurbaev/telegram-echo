@@ -25,6 +25,9 @@ mix.js('resources/assets/js/app.js', 'public/js')
    .combine([
         'resources/assets/scripts/jquery-3.1.1.min.js',
         'resources/assets/scripts/semantic.js',
+        'node_modules/jquery.inputmask/dist/inputmask/inputmask.js',
+        'node_modules/jquery.inputmask/dist/inputmask/inputmask.date.extensions.js',
+        'node_modules/jquery.inputmask/dist/inputmask/jquery.inputmask.js',
     ], 'public/js/vendor.js')
    .less('resources/assets/less/app.less', 'public/css')
    .copy('resources/assets/css/themes', 'public/css/themes', false)

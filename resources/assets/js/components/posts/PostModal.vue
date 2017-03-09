@@ -21,6 +21,20 @@
           <div v-if="hasTitleError" class="ui error message">
             <p>Необходимо указать заголовок публикации.</p>
           </div>
+          <div class="field" :class="{'error': hasScheduleDateError}">
+            <label>Дата публикации</label>
+            <input type="text" v-model="form.schedule_date" class="scheduled-date-input">
+          </div>
+          <div v-if="hasScheduleDateError" class="ui error message">
+            <p>Указана некорректная дата публикации</p>
+          </div>
+          <div class="field" :class="{'error': hasScheduleTimeError}">
+            <label>Время публикации</label>
+            <input type="text" v-model="form.schedule_time" class="scheduled-time-input">
+          </div>
+          <div v-if="hasScheduleTimeError" class="ui error message">
+            <p>Указано некорректное время публикации</p>
+          </div>
           <div class="field" :class="{'error': hasMessageError}">
             <label>Текст</label>
             <textarea cols="30" rows="10" :id="modalFormId" v-model="form.message"></textarea>
@@ -71,7 +85,10 @@ export default {
     },
 
     hasFormError() {
-      return this.hasChannelError || this.hasTitleError || this.hasMessageError || this.hasAttachmentsError
+      return (
+        this.hasChannelError || this.hasTitleError || this.hasMessageError ||
+        this.hasAttachmentsError || this.hasScheduleDateError || this.hasScheduleTimeError
+      )
     },
 
     formTitle() {
@@ -89,7 +106,9 @@ export default {
 
   methods: {
     initModal() {
-      window.jQuery(`#${this.modalId}`).modal({
+      const modalRoot = window.jQuery(`#${this.modalId}`)
+
+      modalRoot.modal({
         closable: false,
         keyboardShortcuts: false,
       })
@@ -107,6 +126,9 @@ export default {
         tabSize: 4,
         toolbar: ['bold', 'italic', 'code', 'link'],
       })
+
+      window.jQuery('.scheduled-date-input', modalRoot).inputmask('dd.mm.yyyy')
+      window.jQuery('.scheduled-time-input', modalRoot).inputmask('hh:mm')
     },
 
     showModal(post) {
@@ -127,6 +149,9 @@ export default {
         title: '',
         message: '',
         attachments: '',
+        schedule_date: '',
+        schedule_time: '',
+        scheduled_at: '',
       }
 
       if (post && typeof post.id !== 'undefined') {
@@ -137,6 +162,9 @@ export default {
           title: post.title,
           message: post.message,
           attachments: post.attachments,
+          schedule_date: post.scheduled_at_formatted.date,
+          schedule_time: post.scheduled_at_formatted.time,
+          scheduled_at: '',
         }
       }
 
@@ -152,6 +180,8 @@ export default {
       this.hasTitleError = false
       this.hasMessageError = false
       this.hasAttachmentsError = false
+      this.hasScheduleDateError = false
+      this.hasScheduleTimeError = false
     },
 
     validate() {
@@ -176,6 +206,8 @@ export default {
 
         return false
       }
+
+      this.form.scheduled_at = this.makeScheduledAtField()
 /*
       if (!this.form.attachments.trim()) {
         this.hasAttachmentsError = true
@@ -184,6 +216,21 @@ export default {
       }
 */
       return true
+    },
+
+    makeScheduledAtField() {
+      return ($ => {
+        const unmaskedDate = $('.scheduled-date-input', $(`#${this.modalId}`)).val()
+        const unmaskedTime = $('.scheduled-time-input', $(`#${this.modalId}`)).val()
+
+        if (!unmaskedDate.trim() || !unmaskedTime.trim()) {
+          return ''
+        }
+
+        const date = unmaskedDate.split('.')
+
+        return `${date[2]}-${date[1]}-${date[0]} ${unmaskedTime}`
+      })(window.jQuery)
     },
 
     submitForm() {
@@ -245,12 +292,17 @@ export default {
         channel_id: 0,
         title: '',
         message: '',
+        schedule_date: '',
+        schedule_time: '',
+        scheduled_at: '',
       },
       formIsBusy: false,
       hasChannelError: false,
       hasTitleError: false,
       hasMessageError: false,
       hasAttachmentsError: false,
+      hasScheduleDateError: false,
+      hasScheduleTimeError: false,
       editor: null,
     }
   }

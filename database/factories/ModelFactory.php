@@ -21,6 +21,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'email' => $faker->unique()->safeEmail,
         'password' => '$2y$10$UEaj2ksyJYME/wq0UDrvo.WATlHsh2wjONn3fvM7x/3c/qYtLdky6',
         'remember_token' => str_random(10),
+        'timezone' => 'Etc/UTC',
     ];
 });
 
