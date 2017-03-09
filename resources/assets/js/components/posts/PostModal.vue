@@ -208,6 +208,7 @@ export default {
       }
 
       this.form.scheduled_at = this.makeScheduledAtField()
+
 /*
       if (!this.form.attachments.trim()) {
         this.hasAttachmentsError = true
@@ -224,7 +225,7 @@ export default {
         const unmaskedTime = $('.scheduled-time-input', $(`#${this.modalId}`)).val()
 
         if (!unmaskedDate.trim() || !unmaskedTime.trim()) {
-          return ''
+          return null
         }
 
         const date = unmaskedDate.split('.')

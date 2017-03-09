@@ -38,7 +38,7 @@ class StorePostRequest extends FormRequest
             'channel_id' => 'required|integer|exists:channels,id',
             'title' => 'string',
             'message' => 'string',
-            'scheduled_at' => 'date_format:Y-m-d H:i',
+            'scheduled_at' => 'nullable|date_format:Y-m-d H:i',
             'attachments.*.type' => 'string|in:photo,video,audio,location',
             'attachments.*.params' => 'array',
         ];
