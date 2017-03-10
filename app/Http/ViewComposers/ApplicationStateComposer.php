@@ -28,19 +28,23 @@ class ApplicationStateComposer
      */
     public function compose(View $view)
     {
-        $user = Auth::user();
-
-        $userItem = fractal($user, new UserTransformer());
-        $channels = fractal($user->channels, new ChannelTransformer());
-        $bots = fractal($user->bots, new BotTransformer());
-        $posts = fractal($user->posts, new PostTransformer());
-
         $this->state
-            ->put('application', $this->getApplication())
-            ->put('user', $userItem->toArray())
-            ->put('channels', $channels->toArray())
-            ->put('bots', $bots->toArray())
-            ->put('posts', $posts->toArray());
+            ->put('application', $this->getApplication());
+
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            $userItem = fractal($user, new UserTransformer());
+            $channels = fractal($user->channels, new ChannelTransformer());
+            $bots = fractal($user->bots, new BotTransformer());
+            $posts = fractal($user->posts, new PostTransformer());
+
+            $this->state
+                ->put('user', $userItem->toArray())
+                ->put('channels', $channels->toArray())
+                ->put('bots', $bots->toArray())
+                ->put('posts', $posts->toArray());
+        }
 
         $view->with('applicationState', $this->state->toArray());
     }
