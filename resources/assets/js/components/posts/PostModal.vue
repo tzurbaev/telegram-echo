@@ -11,14 +11,14 @@
               <option :value="channel.id" v-for="channel in channels" v-if="channel.has_bot">{{ channel.name }}</option>
             </select>
           </div>
-          <div v-if="hasChannelError" class="ui error message">
+          <div v-show="hasChannelError" class="ui error message">
             <p>Необходимо указать канал для публикации.</p>
           </div>
           <div class="field" :class="{'error': hasTitleError}">
             <label>Заголовок</label>
             <input type="text" placeholder="" v-model="form.title">
           </div>
-          <div v-if="hasTitleError" class="ui error message">
+          <div v-show="hasTitleError" class="ui error message">
             <p>Необходимо указать заголовок публикации.</p>
           </div>
           <div class="ui visible warning message">
@@ -31,21 +31,21 @@
             <label>Дата публикации</label>
             <input type="text" class="scheduled-date-input">
           </div>
-          <div v-if="hasScheduleDateError" class="ui error message">
+          <div v-show="hasScheduleDateError" class="ui error message">
             <p>Указана некорректная дата публикации</p>
           </div>
           <div class="field" :class="{'error': hasScheduleTimeError}">
             <label>Время публикации</label>
             <input type="text" class="scheduled-time-input">
           </div>
-          <div v-if="hasScheduleTimeError" class="ui error message">
+          <div v-show="hasScheduleTimeError" class="ui error message">
             <p>Указано некорректное время публикации</p>
           </div>
           <div class="field">
             <label>Текст</label>
             <textarea cols="30" rows="10" :id="modalFormId" class="original-textarea-field"></textarea>
           </div>
-          <div v-if="hasMessageError" class="ui error message">
+          <div v-show="hasMessageError" class="ui error message">
             <p>Необходимо указать текст публикации.</p>
           </div>
           <button type="button" class="ui primary button" @click="submitForm" :disabled="formIsBusy">
