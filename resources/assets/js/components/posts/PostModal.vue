@@ -1,6 +1,6 @@
 <template>
   <div class="post-modal-component">
-    <div class="ui modal" :id="modalId">
+    <div class="ui long modal" :id="modalId">
       <div class="header">{{ formTitle }}</div>
       <div class="content">
         <div class="ui form" :class="{'error': hasFormError}">
