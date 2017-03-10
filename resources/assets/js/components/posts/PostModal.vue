@@ -29,21 +29,21 @@
           </div>
           <div class="field" :class="{'error': hasScheduleDateError}">
             <label>Дата публикации</label>
-            <input type="text" v-model="form.schedule_date" class="scheduled-date-input">
+            <input type="text" class="scheduled-date-input">
           </div>
           <div v-if="hasScheduleDateError" class="ui error message">
             <p>Указана некорректная дата публикации</p>
           </div>
           <div class="field" :class="{'error': hasScheduleTimeError}">
             <label>Время публикации</label>
-            <input type="text" v-model="form.schedule_time" class="scheduled-time-input">
+            <input type="text" class="scheduled-time-input">
           </div>
           <div v-if="hasScheduleTimeError" class="ui error message">
             <p>Указано некорректное время публикации</p>
           </div>
-          <div class="field" :class="{'error': hasMessageError}">
+          <div class="field">
             <label>Текст</label>
-            <textarea cols="30" rows="10" :id="modalFormId" v-model="form.message"></textarea>
+            <textarea cols="30" rows="10" :id="modalFormId" class="original-textarea-field"></textarea>
           </div>
           <div v-if="hasMessageError" class="ui error message">
             <p>Необходимо указать текст публикации.</p>
@@ -64,6 +64,12 @@
     </div>
   </div>
 </template>
+
+<style>
+.original-textarea-field {
+  display: none;
+}
+</style>
 
 <script>
 import SimpleMDE from 'simplemde'
@@ -170,8 +176,6 @@ export default {
         title: '',
         message: '',
         attachments: '',
-        schedule_date: '',
-        schedule_time: '',
         scheduled_at: '',
       }
 
@@ -183,8 +187,6 @@ export default {
           title: post.title,
           message: post.message,
           attachments: post.attachments,
-          schedule_date: post.scheduled_at_formatted.date,
-          schedule_time: post.scheduled_at_formatted.time,
           scheduled_at: '',
         }
       }
@@ -314,8 +316,6 @@ export default {
         channel_id: 0,
         title: '',
         message: '',
-        schedule_date: '',
-        schedule_time: '',
         scheduled_at: '',
       },
       formIsBusy: false,
