@@ -68,7 +68,7 @@ class ApplicationStateComposer
     protected function getRoutes()
     {
         $routes = [
-            'settings' => ['update' => 'put'],
+            'settings' => ['update' => 'put', 'timezones' => 'get'],
             'channels' => ['index' => 'get', 'store' => 'post'],
             'bots' => ['index' => 'get', 'store' => 'post'],
             'posts' => ['index' => 'get', 'store' => 'post'],

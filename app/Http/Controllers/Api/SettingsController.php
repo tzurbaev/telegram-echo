@@ -15,7 +15,7 @@ class SettingsController extends Controller
      */
     public function update(UpdateSettingsRequest $request)
     {
-        $common = $this->withoutNulls($request, ['name', 'email'], false);
+        $common = $this->withoutNulls($request, ['name', 'email', 'timezone'], false);
         $user = $request->user();
 
         if (count($common) > 0) {
@@ -27,7 +27,7 @@ class SettingsController extends Controller
 
             return response()->json([
                 'success' => 1,
-                'password_changed' => 1,
+                'password_changed' => 0,
             ]);
         }
 
@@ -46,6 +46,17 @@ class SettingsController extends Controller
         return response()->json([
             'success' => 1,
             'password_changed' => 1,
+        ]);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function timezones()
+    {
+        return response()->json([
+            'success' => 1,
+            'data' => trans('timezones'),
         ]);
     }
 }

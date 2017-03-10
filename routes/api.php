@@ -13,6 +13,7 @@
 
 Route::group(['middleware' => 'auth'], function () {
     Route::put('/settings', 'SettingsController@update')->name('api.settings.update');
+    Route::get('/settings/timezones', 'SettingsController@timezones')->name('api.settings.timezones');
 
     Route::resource('/channels', 'ChannelsController', [
         'only' => ['index', 'store', 'show', 'update', 'destroy'],

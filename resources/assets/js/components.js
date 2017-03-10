@@ -4,7 +4,8 @@ import BotModal from './components/bots/BotModal.vue'
 import ChannelModal from './components/channels/ChannelModal.vue'
 import PostModal from './components/posts/PostModal.vue'
 import LogoutForm from './components/auth/LogoutForm.vue'
+import UserProfileModal from './components/auth/UserProfileModal.vue'
 
 export default {
-    Sidebar, LatestPosts, BotModal, ChannelModal, PostModal, LogoutForm,
+    Sidebar, LatestPosts, BotModal, ChannelModal, PostModal, LogoutForm, UserProfileModal,
 }

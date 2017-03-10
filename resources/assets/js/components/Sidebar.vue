@@ -21,7 +21,7 @@
     <div class="item">
       <div class="header">{{ user.name }}</div>
       <div class="menu">
-        <a href="javascript:;" class="item">Настройки аккаунта</a>
+        <a href="javascript:;" class="item" @click="showUserProfileModal">Настройки аккаунта</a>
         <a href="javascript:;" class="item" @click="performLogout">Выход</a>
       </div>
     </div>
@@ -51,6 +51,10 @@ export default {
 
     showCreateChannelModal(channel) {
       this.$root.sharedEventBus.$emit('channelmodal.show', channel)
+    },
+
+    showUserProfileModal() {
+      this.$root.sharedEventBus.$emit('profilemodal.show')
     },
 
     performLogout() {

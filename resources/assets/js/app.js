@@ -71,6 +71,12 @@ const store = new Vuex.Store({
         removePost(state, id) {
             state.posts = state.posts.filter(post => post.id !== id)
         },
+
+        updateUserFields(state, fields) {
+            for (let f in fields) {
+                state.user[f] = fields[f]
+            }
+        },
     }
 })
 
