@@ -19,6 +19,10 @@
       <template v-else>
         <p>Нет записей для отображения.</p>
         <p v-if="!canCreatePosts">Для того, чтобы добавить первую запись, необходимо создать бота и канал.</p>
+        <p>
+          Ваш текущий часовой пояс: <strong>{{ timezoneName }}</strong>.
+          Вы можете изменить его в <a href="javascript:;" @click="showUserProfileModal">настройках аккаунта</a>.
+        </p>
       </template>
     </div>
   </div>
@@ -46,13 +50,21 @@ export default {
         'ui primary button': true,
         'disabled': !this.canCreatePosts,
       }
+    },
+
+    timezoneName() {
+      return this.$store.getters.user.timezone_name
     }
   },
 
   methods: {
     showNewPostDialog() {
       this.$root.sharedEventBus.$emit('postmodal.show')
-    }
+    },
+
+    showUserProfileModal() {
+      this.$root.sharedEventBus.$emit('profilemodal.show')
+    },
   },
 
   data() {

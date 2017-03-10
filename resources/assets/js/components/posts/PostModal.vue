@@ -21,6 +21,12 @@
           <div v-if="hasTitleError" class="ui error message">
             <p>Необходимо указать заголовок публикации.</p>
           </div>
+          <div class="ui visible warning message">
+            <p>
+              Ваш часовой пояс: <strong>{{ timezoneName }}</strong>.
+              <a href="javascript:;" @click="showUserProfileModal">Изменить</a>.
+            </p>
+          </div>
           <div class="field" :class="{'error': hasScheduleDateError}">
             <label>Дата публикации</label>
             <input type="text" v-model="form.schedule_date" class="scheduled-date-input">
@@ -101,7 +107,11 @@ export default {
 
     channels() {
       return this.$store.getters.channelsList
-    }
+    },
+
+    timezoneName() {
+      return this.$store.getters.user.timezone_name
+    },
   },
 
   methods: {
@@ -140,6 +150,17 @@ export default {
 
     closeModal() {
       window.jQuery(`#${this.modalId}`).modal('hide')
+    },
+
+    showUserProfileModal() {
+      if (!confirm('Если вы перейдете в настройки аккаунта, эта форма будет закрыта. Продолжить?')) {
+        return
+      }
+
+      this.closeModal()
+      setTimeout(() => {
+        this.$root.sharedEventBus.$emit('profilemodal.show')
+      }, 500)
     },
 
     initForm(post) {

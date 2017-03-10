@@ -15,6 +15,7 @@ class UserTransformer extends TransformerAbstract
             'name' => $user->name,
             'email' => $user->email,
             'timezone' => $user->timezone,
+            'timezone_name' => trans('timezones.'.$user->timezone.'.name'),
             'created_at' => DateTimeHelper::formatLocalized('date.time', $user->created_at),
             'updated_at' => DateTimeHelper::formatLocalized('date.time', $user->updated_at),
         ];

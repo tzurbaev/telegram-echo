@@ -222,7 +222,8 @@ export default {
               this.$store.commit('updateUserFields', {
                 name: this.form.name,
                 email: this.form.email,
-                timezone: this.form.timezone
+                timezone: this.form.timezone,
+                timezone_name: this.timezonesList[this.form.timezone].name,
               })
 
               alert('Настройки аккаунта были успешно сохранены!')

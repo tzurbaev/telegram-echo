@@ -64,7 +64,7 @@ class GenerateTimezonesList extends Command
             });
 
             $timezonesList = var_export(
-                $timezones->get($locale)->sortBy('offset')->values()->toArray(),
+                $timezones->get($locale)->sortBy('offset')->toArray(),
                 true
             );
 
